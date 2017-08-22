@@ -108,7 +108,7 @@
 
 %% Abstract section.
 \abstract{
-	People lie, mislead, and bullshit in a myriad of ways. Visualizations, as a form of communication, are no exception to these tendencies. Yet, the language we use to describe how people can use visualizations to mislead is relatively sparse. For instance, one is either ``lying with vis'' or using ``deceptive visualizations.'' In this paper, we use the language of computer security to expand the space of ways that unscrupulous people (black hats) can manipulate visualizations for nefarious ends. In addition to forms of deception well-covered in the visualization literature, we also focus on visualizations which have fidelity to the underlying data (and so may not be considered deceptive in the ordinary use of the term in visualization), but still have negative impact on how data are perceived. We encourage designers to think defensively and comprehensively about how their visual designs can result in data being misinterpreted.
+	People lie, mislead, and bullshit in a myriad of ways. Visualizations, as a form of communication, are no exception to these tendencies. Yet, the language we use to describe how people can use visualizations to mislead can be relatively sparse. For instance, one can be ``lying with vis'' or using ``deceptive visualizations.'' In this paper, we use the language of computer security to expand the space of ways that unscrupulous people (black hats) can manipulate visualizations for nefarious ends. In addition to forms of deception well-covered in the visualization literature, we also focus on visualizations which have fidelity to the underlying data (and so may not be considered deceptive in the ordinary use of the term in visualization), but still have negative impact on how data are perceived. We encourage designers to think defensively and comprehensively about how their visual designs can result in data being misinterpreted.
 } % end of abstract
 
 %% ACM Computing Classification System (CCS). 
@@ -203,7 +203,7 @@ Simpson's paradox is one example (Fig. \ref{fig:simpsons}) of this power. The sa
 
 \section{Obfuscation}
 
-\begin{figure*}
+\begin{figure*}[!th]
 	\centering
 	\begin{subfigure}{0.9\columnwidth}
 		\includegraphics[width=\textwidth]{pictures/healthdirty.jpg}
@@ -224,10 +224,10 @@ Another attack which relies on obfuscation is to hide relevant information among
 
 \section{Nudges}
 
-\begin{figure}
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.45\columnwidth]{pictures/within}
-	\caption{An example of a nudge, on polling data. The bars in bar charts create a visual metaphor of containment. This causes outcomes that would fall inside of the bar to perceived as liklier than values outside of the bar. Other visualizations lack this bias. In this sample polling data, viewers were more confident that Candidate would underperform when presented with a bar chart (as on the left) than with a violin plot (as on the right)~\protect\cite{correll2014error}.}
+	\caption{An example of a nudge, on polling data. The bars in bar charts create a visual metaphor of containment. This causes outcomes that would fall inside of the bar to perceived as liklier than values outside of the bar. Other visualizations lack this bias. In this sample polling data, viewers were more confident that Candidate A would underperform when presented with a bar chart (as on the left) than with a violin plot (as on the right)~\protect\cite{correll2014error}.}
 	\label{fig:nudge}
 \end{figure}
 
@@ -237,7 +237,7 @@ Although the impact of these individual nudges can be minor, these nudges could 
 
 \section{Discussion}
 
-As the collection and presentation of data becomes a larger part of peoples' lives, visualization becomes more and more important. This importance has a moral component: all powerful technologies have the potential for both use and abuse. We as a field should consider the full space of how visualizations can be misused. Performing this sort of analysis requires putting ourselves in the mindset of bad actors, and to consider the persuasive and rhetorical content of the visualizations that we make, even with the best of intentions. Enumerating these attacks offers the promise that we can detect them, and correct them where they are encountered.
+As the collection and presentation of data becomes a larger part of peoples' lives, visualization becomes more and more important. This importance has a moral component: all powerful technologies have the potential for both use and abuse. We as a field should consider the full space of how visualizations can be misused. Performing this sort of analysis requires putting ourselves in the mindset of bad actors, and to consider the persuasive and rhetorical content of the visualizations that we make, even with the best of intentions~\cite{hullman2011visualization}. Enumerating these attacks offers the promise that we can detect them, and correct them where they are encountered.
 
 There are three avenues of future work related to black hat vis. The first is taxonometric: we should enumerate the ways that visualizations can deceive or mislead. The examples presented in this paper, and in other works, are a fraction of this enormous space. The second avenue is empirical: rather than taking it on faith that these attacks are or are not effective to our target audiences, we should collect empirical evidence on the size and reliability of these effects (as per \cite{boy2017showing,pandey2014persuasive}). The last avenue is detection and prevention of bad behavior: ``white hat vis,'' using our analogy. There are many automated tools for generating and interacting with visualizations. To encourage the responsible use of these tools, we need to develop methods for detecting and correcting for their misuse. This ``defensive design'' could take the form of automated assistants (such as systems to detect and correct suboptimal color maps~\cite{poco2018extracting}), or could exist as codified design principles and best practices. However, at a minimum, we ought to bake in more supervision and guidance into visual analytics systems, through smart defaults, automated feedback, and explicit warnings to users and consumers of visualizations.
 %% if specified like this the section will be committed in review mode
