@@ -197,13 +197,7 @@ Another form of attack that piggybacks on established visual conventions is to h
 	\label{fig:simpsons}
 \end{figure}
 
-If the attacker has full control over the data, then the potential for harm quite high. Similar to the non sequitur attacks above, the attacker can arbitrarily change the data and then make visualizations that faithfully present these false values. However, even if we presume that the individual data values are unaltered, there are still a number of ways that a designer can create harmful visualizations, by making malicious choices in how the data are aggregated, summarized, or filtered. Visualization designers are often given ``raw'' data, and are free to these choices themselves, and thus have a great deal of power over what messages a viewer can take away from the data.
-
-Simpson's paradox is one example (Fig. \ref{fig:simpsons}) of this power. The same college admissions data can be used to show a bias either for or against women. This apparent contradiction is due to the fact that women were more likely to apply to departments with lower overall acceptance rates, and vice versa. By choosing how to aggregate and normalize the same data, the designer of the visualization can control the message of the chart. Presenting the full range of counts, percentages, and groups to circumvent these sorts of paradoxes requires visualizations more complex than simple histograms~\cite{poco2018extracting}. Data preparation choices related to aggregation and normalization, such as whether or not to discard outliers, or whether or not to smooth data, can also dramatically affect how data are visualized and subsequently interpreted.
-
-\section{Obfuscation}
-
-\begin{figure*}[!th]
+\begin{figure*}
 	\centering
 	\begin{subfigure}{0.9\columnwidth}
 		\includegraphics[width=\textwidth]{pictures/healthdirty.jpg}
@@ -218,18 +212,24 @@ Simpson's paradox is one example (Fig. \ref{fig:simpsons}) of this power. The sa
 	\label{fig:obfuscation}
 \end{figure*}
 
+If the attacker has full control over the data, then the potential for harm quite high. Similar to the non sequitur attacks above, the attacker can arbitrarily change the data and then make visualizations that faithfully present these false values. However, even if we presume that the individual data values are unaltered, there are still a number of ways that a designer can create harmful visualizations, by making malicious choices in how the data are aggregated, summarized, or filtered. Visualization designers are often given ``raw'' data, and are free to these choices themselves, and thus have a great deal of power over what messages a viewer can take away from the data.
+
+Simpson's paradox is one example (Fig. \ref{fig:simpsons}) of this power. The same college admissions data can be used to show a bias either for or against women. This apparent contradiction is due to the fact that women were more likely to apply to departments with lower overall acceptance rates, and vice versa. By choosing how to aggregate and normalize the same data, the designer of the visualization can control the message of the chart. Presenting the full range of counts, percentages, and groups to circumvent these sorts of paradoxes requires visualizations more complex than simple histograms~\cite{poco2018extracting}. Data preparation choices related to aggregation and normalization, such as whether or not to discard outliers, or whether or not to smooth data, can also dramatically affect how data are visualized and subsequently interpreted.
+
+\section{Obfuscation}
+
 Another form of attack is to intentionally obscure the data values. That is, to make the process of visually extracting particular data values as arduous as possible. Even if the obfuscation does not make data illegible, a successful attack can make people less confident in the data, or their own understanding of the data. In some cases, presenting certain data as too complex to parse is a form of attack in and of itself (as in Fig~\ref{fig:obfuscation}).
 
 Another attack which relies on obfuscation is to hide relevant information amongst a sea of less relevant or less damaging information. Dashboards and infographics often contain a dozen or more separate visualizations. If certain views or facets contain information contrary to the intended message of the attacker, then they can be placed in locations that require extra effort from the viewer to read (for instance, they require zooming, panning, or scrolling to encounter). Alternatively, black hat designers could attempt to counter solitary charts with damning information by including a large number of charts with supportive information. Even if the data in these supporting charts provides only weak or spurious evidence in support of the attacker's goal, their sheer number may mentally outweigh or exhaust the viewer (in argumentation, this technique is sometimes called a ``Gish Gallop''~\cite{gish}).
 
-\section{Nudges}
-
-\begin{figure}[!ht]
+\begin{figure}
 	\centering
 	\includegraphics[width=0.45\columnwidth]{pictures/within}
 	\caption{An example of a nudge, on polling data. The bars in bar charts create a visual metaphor of containment. This causes outcomes that would fall inside of the bar to perceived as liklier than values outside of the bar. Other visualizations lack this bias. In this sample polling data, viewers were more confident that Candidate A would underperform when presented with a bar chart (as on the left) than with a violin plot (as on the right)~\protect\cite{correll2014error}.}
 	\label{fig:nudge}
 \end{figure}
+
+\section{Nudges}
 
 The last form of attack we discuss is where the design of the visualization is altered to emphasize or de-emphasize certain patterns in the data. That is, the viewer is nudged toward or away from a particular interpretation of the data. These attacks are common in marketing; for instance, consumers are more likely to underestimate the price of goods when the price ends in $99$ rather than a round number (i.e., a product costing \$4.99 is more likely to be misremembered as costing less than a product costing \$5.00)~\cite{schindler1989effects}. However, these nudges are also present in visualizations. For instance, points in scatterplots are perceived as being more highly correlated when they are compressed in scale~\cite{cleveland1982variables}. Red glyphs in choropleth maps are perceived as having more area than green glyphs~\cite{cleveland1983color}. Points within the visual area of bars in bar charts are perceived as likelier than points outside of the bars~\cite{newman2012bar}. Estimates of y-intercepts in area charts are lower than in scatterplots~\cite{correll2017regression}. Attackers can take advantage of one or more of these nudges to systematically influence how data are perceived (as in Fig.~\ref{fig:nudge}). 
 
