@@ -8,7 +8,7 @@ function setup(){
   tableauGray = color("#333");
   good = nNormal(50,0.5,0.15);
   bad = addBias(addMode(addOutlier(good,3),5),0.01);
-  mode = true;
+  mode = 0;
   kdeResults = parameterSweep(good,bad,"kde");
   dotResults = parameterSweep(good,bad,"dot");
   histResults = parameterSweep(good,bad,"histogram");
@@ -16,12 +16,22 @@ function setup(){
 }
 
 function mouseClicked(){
-  mode = !mode;
-  if(mode){
+  mode = (mode+1) % 3;
+  switch(mode){
+    case 1:
+    if(histResults)
+      drawClosest(good,bad);
+    break;
+
+    case 2:
+    if(histResults)
+      drawFurthest(good,bad);
+    break;
+
+    case 0:
+    default:
     drawReasonable(good,bad);
-  }
-  else if(kdeResults){
-    drawClosest(good,bad);
+    break;
   }
 }
 
@@ -33,6 +43,24 @@ function drawClosest(good,bad){
   histogram(bad,400,0,350,175,25);
 
 //Least visible differences
+  histogram(good,0,200,350,175,histResults.worst.bin);
+  histogram(bad,400,200,350,175,histResults.worst.bin);
+
+  dotplot(good,0,500,350,25,dotResults.worst.markSize,dotResults.worst.alpha);
+  dotplot(bad,400,500,350,25,dotResults.worst.markSize,dotResults.worst.alpha);
+
+  kdeplot(good,0,600,350,175,kdeResults.worst.bandwidth);
+  kdeplot(bad,400,600,350,175,kdeResults.worst.bandwidth);
+}
+
+function drawFurthest(good,bad){
+  background(255);
+  noStroke();
+//Visible differences
+  histogram(good,0,0,350,175,25);
+  histogram(bad,400,0,350,175,25);
+
+//Most visible differences
   histogram(good,0,200,350,175,histResults.best.bin);
   histogram(bad,400,200,350,175,histResults.best.bin);
 
@@ -76,7 +104,7 @@ function parameterSweep(good,bad,visType){
   //What's the closest visualization I can make, in image space?
 
   var results = [];
-  var diff,minDiff,best;
+  var diff,minDiff,maxDiff,best,worst;
   var first = true;
   switch(visType){
     case "kde":
@@ -88,9 +116,19 @@ function parameterSweep(good,bad,visType){
       kdeplot(bad,0,50,300,50,sigma);
       diff = imgDiff(0,0,0,50,300,50);
       var obj = {"bandwidth": sigma, "diff": diff};
-      if(first || diff<=minDiff){
+      if(first){
         first = false;
         minDiff = diff;
+        maxDiff = diff;
+        best = obj;
+        worst = obj;
+      }
+      if(diff<=minDiff){
+        minDiff = diff;
+        worst = obj;
+      }
+      if(diff>=maxDiff){
+        maxDiff = diff;
         best = obj;
       }
       results.push(obj);
@@ -108,9 +146,19 @@ function parameterSweep(good,bad,visType){
       histogram(bad,0,50,300,50,bin);
       diff = imgDiff(0,0,0,50,300,50);
       var obj = {"bin": bin, "diff": diff};
-      if(first || diff<=minDiff){
+      if(first){
         first = false;
         minDiff = diff;
+        maxDiff = diff;
+        best = obj;
+        worst = obj;
+      }
+      if(diff<=minDiff){
+        minDiff = diff;
+        worst = obj;
+      }
+      if(diff>=maxDiff){
+        maxDiff = diff;
         best = obj;
       }
       results.push(obj);
@@ -133,9 +181,19 @@ function parameterSweep(good,bad,visType){
         dotplot(bad,0,55,300,50,m,a);
         diff = imgDiff(0,0,0,50,300,50);
         var obj = {"alpha": a, "markSize": m, "diff": diff};
-        if(first || diff<=minDiff){
+        if(first){
           first = false;
           minDiff = diff;
+          maxDiff = diff;
+          best = obj;
+          worst = obj;
+        }
+        if(diff<=minDiff){
+          minDiff = diff;
+          worst = obj;
+        }
+        if(diff>=maxDiff){
+          maxDiff = diff;
           best = obj;
         }
         results.push(obj);
@@ -147,6 +205,7 @@ function parameterSweep(good,bad,visType){
     break;
   }
 
+  results.worst = worst;
   results.best = best;
   console.log(best);
   return results;
