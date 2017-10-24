@@ -424,9 +424,14 @@ function histogram(data,x,y,w,h,numBins){
       fill(tableauGray);
       translate(x,y);
       var curx = 0;
+      beginShape();
+      vertex(0,h);
       for(var i = 0;i<bins.length;i++){
-        rect(curx,h,dx,-1 * bins[i].count * dy);
+        vertex(curx,h-(bins[i].count*dy));
+        vertex(curx+dx,h-(bins[i].count*dy));
         curx+=dx;
       }
+      vertex(curx+dx,h);
+      endShape(CLOSE);
       pop();
 }
