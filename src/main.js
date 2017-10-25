@@ -6,6 +6,8 @@ function setup(){
   createCanvas(800,800);
   background(255);
   tableauGray = color("#333");
+  textFont("Futura",24);
+  textAlign(CENTER);
   good = nNormal(50,0.5,0.15);
   bad = addBias(addMode(addOutlier(good,3),5),0.01);
   mode = 0;
@@ -51,6 +53,8 @@ function drawClosest(good,bad){
 
   kdeplot(good,0,600,350,175,kdeResults.worst.bandwidth);
   kdeplot(bad,400,600,350,175,kdeResults.worst.bandwidth);
+
+  text("Closest Vizzes in Mean Pixel Color Distance", 400,800);
 }
 
 function drawFurthest(good,bad){
@@ -69,6 +73,8 @@ function drawFurthest(good,bad){
 
   kdeplot(good,0,600,350,175,kdeResults.best.bandwidth);
   kdeplot(bad,400,600,350,175,kdeResults.best.bandwidth);
+
+  text("Farthest Vizzes in Mean Pixel Color Distance", 400,800);
 }
 
 function drawReasonable(good,bad){
@@ -93,6 +99,7 @@ function drawReasonable(good,bad){
   kdeplot(good,0,600,350,175,sigma);
   kdeplot(bad,400,600,350,175,sigma);
 
+  text("Vizzes with Reasonable Parameters", 400,800);
 }
 
 function draw(){
