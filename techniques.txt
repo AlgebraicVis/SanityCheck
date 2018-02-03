@@ -10,3 +10,4 @@ Variables on Scatterplots Look More Highly Correlated When the Scales are Increa
 Manually label outliers
 Within the bar bias (area/bar chart vs scatter/line)
 
+http://visualizationuniverse.com/charts/

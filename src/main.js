@@ -9,7 +9,7 @@ function setup(){
   textFont("Futura",24);
   textAlign(CENTER);
   good = nNormal(50,0.5,0.15);
-  bad = addBias(addMode(addOutlier(good,3),5),0.01);
+  bad = addBias(addMode(addOutlier(good,10),5),0.01);
   mode = 0;
   kdeResults = parameterSweep(good,bad,"kde");
   dotResults = parameterSweep(good,bad,"dot");
@@ -223,83 +223,116 @@ function bandwidthEstimate(dist) {
   var sigma = dl.stdev(dist);
 
   //something suitably nice when we've only got one value
-  if(sigma==0){
+  if(sigma == 0){
     sigma = 1;
   }
 
   var n = dist.length;
-  var silverman =  Math.pow((4*Math.pow(sigma,5)/(3*n)),0.2);
+  var silverman =  Math.pow((4 * Math.pow(sigma, 5) / (3 * n)), 0.2);
   return silverman;
 }
 
-//Sturges' rule of thumb for histogram bin size selection.
 
-function binEstimate(dist) {
-  var n = dist.length;
-  return Math.ceil(Math.log2(n))+1;
+//How many bins in our histogram?
+
+function binEstimate(dist, rule){
+  var numBins;
+  var ext, range, countD, n, qs, iqr, binSize;
+
+  switch(rule){
+    case "WILKINSON":
+    ext = dl.extent(dist);
+    range = Math.abs(ext[1] - ext[0]);
+    countD = dl.count.distinct(dist);
+    numBins = range / (3 + Math.log2(countD) * Math.log2(countD) );
+    break;
+
+    case "FREEDMAN-DIACONIS":
+    n = dist.length;
+    qs = dl.quartile(dist);
+    iqr = qs[2] - qs[0];
+    binSize = 2 * ( iqr / Math.pow(n, 1/3));
+    ext = dl.extent(dist);
+    range = Math.abs(ext[1] - ext[0]);
+    numBins = range / binSize;
+    break;
+
+    case "SQUAREROOT":
+    n = dist.length;
+    numBins = Math.sqrt(n);
+    break;
+
+    case "STURGES":
+    default:
+    n = dist.length;
+    numBins = Math.ceil(Math.log2(n))+1;
+    break;
+  }
+
+  return numBins
 }
 
 /*
 Distance Functions
 */
 
-function cDiff(color1,color2){
+function cDiff(color1, color2){
   var c1 = d3.lab(color1);
   var c2 = d3.lab(color2);
   return sqrt( sq(c1.l - c2.l) + sq(c1.a - c2.a) + sq(c1.b - c2.b));
 }
 
-function imgDiff(x1,x2,y1,y2,w,h){
+function imgDiff(x1, x2, y1, y2, w, h){
   loadPixels();
   var d = pixelDensity();
   var sumDiff = 0;
-  var n = w*h;
-  var i1,i2,c1,c2;
+  var n = w * h;
+  var i1, i2, c1 ,c2;
 
-  var image1 = get(x1,y1,w,h);
+  var image1 = get(x1, y1, w, h);
   image1.loadPixels();
-  var image2 = get(x2,y2,w,h);
+  var image2 = get(x2, y2, w, h);
   image2.loadPixels();
   i1 = image1.pixels;
   i2 = image2.pixels;
   for(var i = 0;i<i1.length;i+=4){
-    c1 = d3.rgb(i1[i],i1[i+1],i1[i+2],i1[i+3]/255);
-    c2 = d3.rgb(i2[i],i2[i+1],i2[i+2],i2[i+3]/255);
+    c1 = d3.rgb(i1[i], i1[i+1], i1[i+2], i1[i+3] / 255);
+    c2 = d3.rgb(i2[i], i2[i+1], i2[i+2], i2[i+3] / 255);
     sumDiff+= cDiff(c1,c2);
   }
-  return sumDiff/(i1.length/4);
+  return sumDiff / (i1.length / 4);
 }
 
 /*
 Generators
 */
 
-function nNormal(n,m,s){
+function nNormal(n, m, s){
   var dist = [];
   var val;
-  for(var i = 0;i<n;i++){
-    val = constrain(randomGaussian(m,s),0,1);
+  for(var i = 0;i < n;i++){
+    val = constrain(randomGaussian(m, s), 0,1);
     dist.push(val);
   }
   return dist;
 }
 
-function gaussian(mu,sigma) {
+function gaussian(mu, sigma) {
   var gauss = {};
   gauss.mu = mu;
   gauss.sigma = sigma;
   gauss.pdf = function(x){
-    var exp = Math.exp(Math.pow(x-gauss.mu, 2) / (-2 * Math.pow(gauss.sigma, 2)));
-    return (1 / (gauss.sigma * Math.sqrt(2*Math.PI))) * exp;
+    var exp = Math.exp(Math.pow(x - gauss.mu, 2) / (-2 * Math.pow(gauss.sigma, 2)));
+    return (1 / (gauss.sigma * Math.sqrt(2 * Math.PI))) * exp;
   };
   return gauss;
 }
 
-function kde(data,bandwidth){
+function kde(data, bandwidth){
   var density = {};
   density.kernels = [];
-  for(var i = 0;i<data.length;i++){
-    density.kernels.push(gaussian(data[i],bandwidth));
+  for(var i = 0;i < data.length;i++){
+    density.kernels.push(gaussian(data[i], bandwidth));
   }
   density.pdf = function(x){
     var val = 0;
@@ -340,7 +373,7 @@ function addBias(dist,bias){
   return distribution;
 }
 
-function addOutlier(dist,numOutliers){
+function addOutlier(dist, numOutliers){
   //add some outliers
   var distribution = dist.slice();
   var qs = dl.quartile(distribution);
@@ -349,39 +382,68 @@ function addOutlier(dist,numOutliers){
   //outlier if more than 1.5iqr above q[2], or more than 1.5iqr below q[0]
   for(var i = 0;i<numOutliers;i++){
     if(random()<-0.5){
-      distribution.push(random(qs[2]+(1.5*iqr),1));
+      distribution.push(random( qs[2] + ( 1.5 * iqr), 1));
     }
     else{
-      distribution.push(random(0,qs[0]-(1.5*iqr)));
+      distribution.push(random(0, qs[0] - (1.5 * iqr)));
     }
   }
   return distribution;
 }
 
-function addMode(dist,modeSize){
+function addMode(dist, modeSize){
+  //add a random mode somewhere in the iqr.
   var distribution = dist.slice();
   var qs = dl.quartile(distribution);
-  var mode = random(qs[0],qs[2]);
-  for(var i = 0;i<modeSize;i++){
+  var mode = random(qs[0], qs[2]);
+  for(var i = 0;i < modeSize;i++){
     distribution.push(mode);
   }
   return distribution;
 }
 
-function addNoise(dist,bandwidth){
+function addNoise(dist, bandwidth){
+  //add per element gaussian noise
   var distribution = dist.slice();
-  for(var i = 0;i<distribution.length;i++){
-    distribution[i] = constrain(distribution[i]+randomGaussian(0,bandwidth),0,1);
+  for(var i = 0;i < distribution.length;i++){
+    distribution[i] = constrain(distribution[i] + randomGaussian(0, bandwidth), 0, 1);
   }
   return distribution;
 }
 
-function removeValues(dist,minVal,maxVal){
+function removeRange(dist,minVal,maxVal){
+  //remove all values within a certain range
   return dist.filter(function(x){ return (x<minVal || x >maxVal);});
 }
+
+function removeRandom(dist,n){
+  //remove n random values
+  var distribution = dist.slice();
+  var index;
+  for(var i = 0;i<n && distribution.length > 0; i++){
+      index = Math.floor(Math.random() * distribution.length);
+      distribution.splice(index,1);
+  }
+  return distribution;
+}
+
 /*
 Vizzes
 */
+
+function stripplot(data,x,y,w,h,markSize,opacity){
+  var posX;
+
+  push();
+  noStroke();
+  fill(red(tableauGray),green(tableauGray),blue(tableauGray),opacity*255);
+  translate(x,y);
+  for(var i = 0;i<data.length;i++){
+    posX = map(data[i],0,1,0,w);
+    rect(posX - (markSize / 2 ),0,markSize,markSize);
+  }
+  pop();
+}
 
 function dotplot(data,x,y,w,h,markSize,opacity){
   var posX;
@@ -392,7 +454,7 @@ function dotplot(data,x,y,w,h,markSize,opacity){
   translate(x,y);
   for(var i = 0;i<data.length;i++){
     posX = map(data[i],0,1,0,w);
-    ellipse(posX,h/2,markSize,markSize);
+    ellipse(posX, h/2, markSize,markSize);
   }
   pop();
 }
