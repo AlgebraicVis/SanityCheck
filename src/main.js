@@ -272,6 +272,29 @@ function binEstimate(dist, rule){
   return numBins
 }
 
+//Dot Plot Sweep
+
+function dotPlotBin(data,markSize) {
+  var bins = [];
+  var curx = x(0);
+  var curIndex = -1;
+  var dX;
+  for(var i = 0;i<data.length;i++){
+    dX = x(data[i]);
+    if(i==0 || dX>curx+(2*markSize)){
+      curIndex++;
+      bins[curIndex] = {"value": data[i], "count": 1, "sum" : data[i]};
+    }
+    else{
+      bins[curIndex].count++;
+      bins[curIndex].sum+= data[i];
+      bins[curIndex].value = bins[curIndex].sum / bins[curIndex].count;
+    }
+    curx = x(bins[curIndex].value);
+  }
+  return bins;
+}
+
 /*
 Distance Functions
 */
@@ -327,6 +350,24 @@ function gaussian(mu, sigma) {
   };
   return gauss;
 }
+
+function epanechinikov(mu,support){
+    var epa = {};
+    epa.mu = mu;
+    epa.support = support;
+    epa.pdf = function(x){
+        var dist = x - epa.mu;
+        if(Math.avs(dist) > epa.support){
+          return 0;
+        }
+        else{
+          var u = dist/epa.support;
+          return 0.75 * (1 - (u * u));
+        }
+    }
+    return epa;
+}
+
 
 function kde(data, bandwidth){
   var density = {};
