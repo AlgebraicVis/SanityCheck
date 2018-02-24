@@ -3,13 +3,13 @@ var tableauGray;
 var good,bad,kdeResults,dotResults,histResults;
 
 function setup(){
-  createCanvas(800,800);
+  createCanvas(1000,950);
   background(255);
   tableauGray = color("#333");
   textFont("Futura",24);
   textAlign(CENTER);
   good = nNormal(50,0.5,0.15);
-  bad = addBias(addMode(addOutlier(good,10),5),0.01);
+  bad = addNoise(addBias(addMode(addOutlier(good,0),10),0),0);
   mode = 0;
   kdeResults = parameterSweep(good,bad,"kde");
   dotResults = parameterSweep(good,bad,"dot");
@@ -32,7 +32,7 @@ function mouseClicked(){
 
     case 0:
     default:
-    drawReasonable(good,bad);
+      drawReasonable(good,bad);
     break;
   }
 }
@@ -41,15 +41,15 @@ function drawClosest(good,bad){
   background(255);
   noStroke();
 //Visible differences
-  histogram(good,0,0,350,175,25);
-  histogram(bad,400,0,350,175,25);
+  wilkinsonDotPlot(good,0,0,350,175);
+  wilkinsonDotPlot(bad,400,0,350,175);
 
 //Least visible differences
   histogram(good,0,200,350,175,histResults.worst.bin);
   histogram(bad,400,200,350,175,histResults.worst.bin);
 
-  dotplot(good,0,500,350,25,dotResults.worst.markSize,dotResults.worst.alpha);
-  dotplot(bad,400,500,350,25,dotResults.worst.markSize,dotResults.worst.alpha);
+  dotplot(good,0,500,350,25,dotResults.worst.markSize,dotResults.worst.alpha,true);
+  dotplot(bad,400,500,350,25,dotResults.worst.markSize,dotResults.worst.alpha,true);
 
   kdeplot(good,0,600,350,175,kdeResults.worst.bandwidth);
   kdeplot(bad,400,600,350,175,kdeResults.worst.bandwidth);
@@ -61,15 +61,15 @@ function drawFurthest(good,bad){
   background(255);
   noStroke();
 //Visible differences
-  histogram(good,0,0,350,175,25);
-  histogram(bad,400,0,350,175,25);
+  wilkinsonDotPlot(good,0,0,350,175);
+  wilkinsonDotPlot(bad,400,0,350,175);
 
 //Most visible differences
   histogram(good,0,200,350,175,histResults.best.bin);
   histogram(bad,400,200,350,175,histResults.best.bin);
 
-  dotplot(good,0,500,350,25,dotResults.best.markSize,dotResults.best.alpha);
-  dotplot(bad,400,500,350,25,dotResults.best.markSize,dotResults.best.alpha);
+  dotplot(good,0,500,350,25,dotResults.best.markSize,dotResults.best.alpha,true);
+  dotplot(bad,400,500,350,25,dotResults.best.markSize,dotResults.best.alpha,true);
 
   kdeplot(good,0,600,350,175,kdeResults.best.bandwidth);
   kdeplot(bad,400,600,350,175,kdeResults.best.bandwidth);
@@ -86,20 +86,22 @@ function drawReasonable(good,bad){
   background(255);
   noStroke();
 //Visible differences
-  histogram(good,0,0,350,175,25);
-  histogram(bad,400,0,350,175,25);
+  wilkinsonDotPlot(good,0,0,350,175);
+  wilkinsonDotPlot(bad,400,0,350,175);
 
 //Reasonable parameters
   histogram(good,0,200,350,175,bins);
   histogram(bad,400,200,350,175,bins);
 
-  dotplot(good,0,500,350,25,markSize,markOpacity);
-  dotplot(bad,400,500,350,25,markSize,markOpacity);
+  dotplot(good,0,500,350,25,markSize,markOpacity,true);
+  dotplot(bad,400,500,350,25,markSize,markOpacity,true);
 
   kdeplot(good,0,600,350,175,sigma);
   kdeplot(bad,400,600,350,175,sigma);
 
-  text("Vizzes with Reasonable Parameters", 400,800);
+  text("Vizzes with A Priori Parameters", 400,850);
+  text("Distribution", 200, 800);
+  text("Distribution + Flaw(s)", 600, 800);
 }
 
 function draw(){
@@ -116,7 +118,7 @@ function parameterSweep(good,bad,visType){
   switch(visType){
     case "kde":
     //valid bandwidths
-    var sigmas = dl.range(0.01,0.41,0.01);
+    var sigmas = dl.range(0.01,0.26,0.01);
     for(var sigma of sigmas){
       background(255);
       kdeplot(good,0,0,300,50,sigma);
@@ -184,8 +186,8 @@ function parameterSweep(good,bad,visType){
     for(var m of ms){
       for(var a of as){
         background(255);
-        dotplot(good,0,0,300,50,m,a);
-        dotplot(bad,0,55,300,50,m,a);
+        dotplot(good,0,0,300,50,m,a,true);
+        dotplot(bad,0,55,300,50,m,a,true);
         diff = imgDiff(0,0,0,50,300,50);
         var obj = {"alpha": a, "markSize": m, "diff": diff};
         if(first){
@@ -207,8 +209,8 @@ function parameterSweep(good,bad,visType){
       }
     }
     background(255);
-    dotplot(good,0,0,300,50,best.markSize,best.alpha);
-    dotplot(bad,0,55,300,50,best.markSize,best.alpha);
+    dotplot(good,0,0,300,50,best.markSize,best.alpha,true);
+    dotplot(bad,0,55,300,50,best.markSize,best.alpha,true);
     break;
   }
 
@@ -274,14 +276,18 @@ function binEstimate(dist, rule){
 
 //Dot Plot Sweep
 
-function dotPlotBin(data,markSize) {
+function dotPlotBin(data,w,markSize) {
+  data = data.sort();
+  var x = function(pos){
+    return map(pos,0,1,0,w);
+  }
   var bins = [];
   var curx = x(0);
   var curIndex = -1;
   var dX;
   for(var i = 0;i<data.length;i++){
     dX = x(data[i]);
-    if(i==0 || dX>curx+(2*markSize)){
+    if(i==0 || dX>curx+markSize){
       curIndex++;
       bins[curIndex] = {"value": data[i], "count": 1, "sum" : data[i]};
     }
@@ -299,6 +305,15 @@ function dotPlotBin(data,markSize) {
 Distance Functions
 */
 
+//Boolean Distance
+function bDiff(color1, color2){
+  var c1 = d3.rgb(color1);
+  var c2 = d3.rgb(color2);
+
+  return c1.r==c2.r && c1.g==c2.g && c1.b==c2.b && c1.opacity==c2.opacity ? 0 : 1;
+}
+
+//Euclidean distance in CIELab colorspace
 function cDiff(color1, color2){
   var c1 = d3.lab(color1);
   var c2 = d3.lab(color2);
@@ -321,7 +336,7 @@ function imgDiff(x1, x2, y1, y2, w, h){
   for(var i = 0;i<i1.length;i+=4){
     c1 = d3.rgb(i1[i], i1[i+1], i1[i+2], i1[i+3] / 255);
     c2 = d3.rgb(i2[i], i2[i+1], i2[i+2], i2[i+3] / 255);
-    sumDiff+= cDiff(c1,c2);
+    sumDiff+= bDiff(c1,c2);
   }
   return sumDiff / (i1.length / 4);
 }
@@ -409,7 +424,7 @@ function addBias(dist,bias){
   //add mean bias
   var distribution = dist.slice();
   for(var i = 0;i< distribution.length;i++){
-    distribution[i] = constrain(distribution[i]-bias,0,1);
+    distribution[i] = constrain(distribution[i]+bias,0,1);
   }
   return distribution;
 }
@@ -418,15 +433,18 @@ function addOutlier(dist, numOutliers){
   //add some outliers
   var distribution = dist.slice();
   var qs = dl.quartile(distribution);
-  var iqr = qs[0]-qs[2];
+  var iqr = qs[2]-qs[0];
+
+  var upperF = min(qs[2] + ( 1.5 * iqr),1);
+  var lowerF = max(qs[0] - (1.5 * iqr),0);
 
   //outlier if more than 1.5iqr above q[2], or more than 1.5iqr below q[0]
   for(var i = 0;i<numOutliers;i++){
-    if(random()<-0.5){
-      distribution.push(random( qs[2] + ( 1.5 * iqr), 1));
+    if(random()>0.5){
+      distribution.push(random(upperF, 1));
     }
     else{
-      distribution.push(random(0, qs[0] - (1.5 * iqr)));
+      distribution.push(random(0, lowerF));
     }
   }
   return distribution;
@@ -446,6 +464,9 @@ function addMode(dist, modeSize){
 function addNoise(dist, bandwidth){
   //add per element gaussian noise
   var distribution = dist.slice();
+  if(bandwidth==0){
+    return distribution;
+  }
   for(var i = 0;i < distribution.length;i++){
     distribution[i] = constrain(distribution[i] + randomGaussian(0, bandwidth), 0, 1);
   }
@@ -486,12 +507,20 @@ function stripplot(data,x,y,w,h,markSize,opacity){
   pop();
 }
 
-function dotplot(data,x,y,w,h,markSize,opacity){
+function dotplot(data,x,y,w,h,markSize,opacity, empty){
   var posX;
-
+  var dotC = color(red(tableauGray),green(tableauGray),blue(tableauGray),opacity*255);
   push();
   noStroke();
-  fill(red(tableauGray),green(tableauGray),blue(tableauGray),opacity*255);
+  if(empty){
+    fill(0,0);
+    stroke(dotC);
+    strokeWeight(3);
+  }
+  else{
+    fill(dotC);
+    noStroke();
+  }
   translate(x,y);
   for(var i = 0;i<data.length;i++){
     posX = map(data[i],0,1,0,w);
@@ -528,7 +557,7 @@ function kdeplot(data,x,y,w,h,bandwidth){
 function histogram(data,x,y,w,h,numBins){
       var bins = dl.histogram(data,{min: 0, max: 1, step: 1/numBins});
       var dx = w / bins.length;
-      var dy = h /dl.max(bins,"count");
+      var dy = h / dl.max(bins,"count");
       push();
       noStroke();
       fill(tableauGray);
@@ -541,7 +570,45 @@ function histogram(data,x,y,w,h,numBins){
         vertex(curx+dx,h-(bins[i].count*dy));
         curx+=dx;
       }
-      vertex(curx+dx,h);
+      vertex(curx,h);
       endShape(CLOSE);
       pop();
+}
+
+function wilkinsonDotPlot(data,x,y,w,h,markSize){
+    var bins;
+
+    //make mark size "the biggest that will fit in our h"
+    //if not provided
+    if(!markSize){
+      var markSize = 1;
+      bins = dotPlotBin(data,w,markSize);
+      while(dl.max(bins,"count")*markSize<h){
+        markSize++;
+        bins = dotPlotBin(data,w,markSize);
+      }
+      markSize = markSize>=2 ?  markSize-1 : 1;
+      bins = dotPlotBin(data,w,markSize);
+    }
+    else{
+      bins = dotPlotBin(data,w,markSize);
+    }
+    var curx;
+    var cury;
+    push();
+    noStroke();
+    fill(tableauGray);
+    translate(x,y);
+    var x = function(pos){
+      return map(pos,0,1,0,w);
+    }
+    for(var i = 0;i<bins.length;i++){
+      curx = x(bins[i].value);
+      cury = h-markSize/2;
+      for(var j = 0;j<bins[i].count;j++){
+        ellipse(curx,cury,markSize,markSize);
+        cury-=markSize;
+      }
+    }
+    pop();
 }
