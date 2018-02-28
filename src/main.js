@@ -54,7 +54,9 @@ function drawClosest(good,bad){
   kdeplot(good,0,600,350,175,kdeResults.worst.bandwidth);
   kdeplot(bad,400,600,350,175,kdeResults.worst.bandwidth);
 
-  text("Closest Vizzes in Mean Pixel Color Distance", 400,800);
+  text("Closest Vizzes in Mean Pixel Color Distance", 400,850);
+  text("Distribution", 200, 800);
+  text("Distribution + Flaw(s)", 600, 800);
 }
 
 function drawFurthest(good,bad){
@@ -74,7 +76,9 @@ function drawFurthest(good,bad){
   kdeplot(good,0,600,350,175,kdeResults.best.bandwidth);
   kdeplot(bad,400,600,350,175,kdeResults.best.bandwidth);
 
-  text("Farthest Vizzes in Mean Pixel Color Distance", 400,800);
+  text("Farthest Vizzes in Mean Pixel Color Distance", 400,850);
+  text("Distribution", 200, 800);
+  text("Distribution + Flaw(s)", 600, 800);
 }
 
 function drawReasonable(good,bad){
