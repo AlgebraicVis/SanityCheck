@@ -83,7 +83,10 @@ var select = function(){
 Viz Functions
 ***/
 
+//Make a 1d scatterplot
+//Takes a target svg, a data set, a mark size, and a mark opacity.
 var scatter = function(svg,data,markSize,markOpacity){
+  markOpacity = markOpacity ? markOpacity : 1;
   svg.selectAll("circle").data(data).enter().append("circle")
     .attr("fill","#333")
     .attr("r",markSize)
@@ -135,6 +138,7 @@ var density = function(svg,data,bandwidth){
 function testDensity(){
   density(d3.select("svg"),dl.random.uniform(0,1).samples(50),0.05);
 };
+
 /***
 Utility Functions
 ***/
