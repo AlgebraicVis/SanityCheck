@@ -1,0 +1,34 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="./src/style.css" />
+<title>Perception of Data Quality Issues in Viusualizations</title>
+<script src="https://vega.github.io/datalib/datalib.min.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="./src/script.js"></script>
+</head>
+<body>
+<!-- Progress Bar -->
+<div id="progress"></div>
+
+<!-- Question Prompt -->
+<div id="prompt">
+<!-- We will ask them to identify which chart has a certain type of flaw. -->
+<p>You will be shown data from 20 different factories. One of these factories has a <span id="flawType"></span>.
+  Click on the graph with the flawed data, and click the <b>Confirm</b> button to move on.</p>
+<p>Click the <b>Ready</b> button to begin.</p>
+</div>
+
+
+<!-- Ready Button: reveal vizzes and start RT from clicking this. -->
+<button type="button" id="readyBtn" onclick="ready()">Ready</button>
+
+<!-- Main Vis Panel -->
+<div id="panel">
+</div>
+
+<div>
+  <!-- Confirm Button: disabled until after the ready button has been clicked, and the graph has been chosen. -->
+  <button type="button" id="confirmBtn" disabled="disabled">Confirm</button>
+</div>
+</body>
+</html>
