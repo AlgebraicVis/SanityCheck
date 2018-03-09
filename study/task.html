@@ -13,22 +13,17 @@
 <!-- Question Prompt -->
 <div id="prompt">
 <!-- We will ask them to identify which chart has a certain type of flaw. -->
-<p>You will be shown data from 20 different factories. One of these factories has a <span id="flawType"></span>.
+<p>You will be shown data from 20 different factories. One of these factories has <span id="flawType">a flaw</span>.
   Click on the graph with the flawed data, and click the <b>Confirm</b> button to move on.</p>
-<p>Click the <b>Ready</b> button to begin.</p>
 </div>
 
 
 <!-- Ready Button: reveal vizzes and start RT from clicking this. -->
 <button type="button" id="readyBtn" onclick="ready()">Ready</button>
-
+  <!-- Confirm Button: disabled until after the ready button has been clicked, and the graph has been chosen. -->
+<button type="button" id="confirmBtn" onclick="answer()" disabled="disabled">Confirm</button>
 <!-- Main Vis Panel -->
 <div id="panel">
-</div>
-
-<div>
-  <!-- Confirm Button: disabled until after the ready button has been clicked, and the graph has been chosen. -->
-  <button type="button" id="confirmBtn" onclick="answer()" disabled="disabled">Confirm</button>
 </div>
 </body>
 </html>

@@ -8,7 +8,7 @@ var makeStimuli = function(permute){
   //what distribution type the null is generated from
   var distributions = ["uniform","normal","exponential"];
   //what "flaw" is introduced to the null
-  var flaws = ["spike","gap","outlier"];
+  var flaws = ["spike","gap","outliers"];
   //how big this flaw is, in terms of points added/removed.
   //we want to make sure all stim have the same number of points, so we
   //have to make up this difference with more/fewer samples from the null
@@ -172,7 +172,7 @@ var ready = function(){
 // create data with flaw
 // create data without flaws
 // make the vizzes
-// push the data to the participant data
+// tell the participant what to look for
 var makeVizzes = function(stimulis){
   var data = [];
   var i,j;
@@ -237,7 +237,7 @@ var makeVizzes = function(stimulis){
     console.log("gap of "+flawSize+" at "+gapVal);
     break;
 
-    case "outlier":
+    case "outliers":
     default:
     //all non-outlier values
     for(j = 0;j<numSamples-flawSize;j++){
@@ -319,8 +319,10 @@ var makeVizzes = function(stimulis){
     makeViz(curSvg,data[i],stimulis.parameter);
   }
 
-  d3.select("#confirmBtn").attr("disabled",null);
+  var text = stimulis.flaw=="outliers" ? "<b>"+stimulis.flaw+"</b>" : "a <b>"+stimulis.flaw+"</b>";
 
+
+  d3.select("#flawType").html(text);
 }
 
 //What happens when we select a viz in our grid
@@ -333,6 +335,8 @@ var select = function(){
 
     d3.select(this)
       .classed("selected",true);
+
+    d3.select("#confirmBtn").attr("disabled",null);
 };
 
 //What happens when we "confirm" our selection.
@@ -358,6 +362,8 @@ var answer = function(){
   d3.select("#confirmBtn")
     .attr("disabled","disabled");
 
+    d3.select("#flawType").html("a flaw");
+
   questionIndex++;
   //Check to see if the next question is the last one
   if(questionIndex==stimuli.length-1){
@@ -365,6 +371,7 @@ var answer = function(){
       .attr("type","submit")
       .attr("onclick","window.location.href='/post.html'");
   }
+  document.body.scrollTop = document.documentElement.scrollTop = 0;
 }
 
 /***
