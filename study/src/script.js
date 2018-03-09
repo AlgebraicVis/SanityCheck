@@ -12,23 +12,25 @@ var makeStimuli = function(permute){
   //how big this flaw is, in terms of points added/removed.
   //we want to make sure all stim have the same number of points, so we
   //have to make up this difference with more/fewer samples from the null
-  var flawMagnitude = [5,10,15];
+  var flawMagnitude = [10,15,20];
   //viz type
   var vizTypes = ["scatter","histogram","density"];
   //viz parameters
   //kde bandwidth
-  var bandwidths = [0.01,0.02,0.04,0.06,0.08];
+  //note that silverman's would prefer 0.07 for the gaussian case
+  var bandwidths = [0.0175,0.035,0.07];
   //histogram bins
-  var bins = [6,8,10,12,14];
+  //note that sturge's rule would give us only 7!
+  var bins = [7,14,28];
   //scatterplot opacity
-  var opacities = [0.1,0.2,0.4,0.6,0.8];
+  var opacities = [0.05,0.1,0.2];
 
   var replicates = 1;
   var stimulis;
   var parameters;
 
   //currently all blocked effects. We'd potentially want some of these to be random, such
-  //as distribution tyle
+  //as distribution type
   for(dist of distributions){
     for(flaw of flaws){
       for(magnitude of flawMagnitude){
@@ -374,6 +376,9 @@ var answer = function(){
   document.body.scrollTop = document.documentElement.scrollTop = 0;
 }
 
+var cheat = function(){
+  d3.selectAll("svg").filter(d => d.flawed).style("border-color","forestgreen");
+}
 /***
 Viz Functions
 ***/
@@ -421,6 +426,7 @@ var density = function(svg,data,bandwidth){
   var densities = xs.map(function(d){ return {x: d, y: kde(d)}});
   var y = d3.scaleLinear().domain([0,dl.max(densities,"y")]).range([vizHeight,0]);
   var area = d3.area()
+    .curve(d3.curveMonotoneX)
     .x(d => x(d.x))
     .y0(y(0))
     .y1(d => y(d.y));

@@ -275,7 +275,7 @@ function binEstimate(dist, rule){
     break;
   }
 
-  return numBins
+  return numBins;
 }
 
 //Dot Plot Sweep
