@@ -23,7 +23,7 @@ var makeStimuli = function(permute){
   //note that sturge's rule would give us only 7!
   var bins = [7,14,28];
   //scatterplot opacity
-  var opacities = [0.05,0.1,0.2];
+  var opacities = [0.05,0.15,0.3];
 
   var replicates = 1;
   var stimulis;
