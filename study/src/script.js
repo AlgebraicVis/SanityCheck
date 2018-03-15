@@ -440,6 +440,31 @@ function testDensity(){
   density(d3.select("svg"),dl.random.uniform(0,1).samples(50),0.05);
 };
 
+//Wikinson dot plot
+
+var dotplot = function(svg,data,markSize){
+  var bins = dotPlotBin(data,markSize);
+  console.log(bins);
+  var y = d3.scaleLinear().domain([0,dl.max(bins,"count")]).range([vizHeight,0]);
+
+  svg.selectAll("g").data(bins).enter().append("g")
+    .attr("transform", d => "translate("+x(d.value)+")");
+
+  var dots = svg.selectAll("g").selectAll("circle").data(function(d,i){
+      var data = [];
+      for(var j=1;j<=d.count;j++){
+        data.push({"bin": i, "row": j});
+      }
+      return data;
+  }, function(d){ return d.bin+","+d.row;});
+
+  dots.enter().append("circle")
+      .attr("cx",0)
+      .attr("cy",d => 100-((d.row)*(2*markSize)))
+      .attr("r",markSize+"px")
+      .attr("fill","#333");
+};
+
 /***
 Utility Functions
 ***/
@@ -486,3 +511,26 @@ var KDE = function(data,bandwidth){
     return  dl.mean(data.map(d => kernel(d-pos)));
   };
 };
+
+//Wilkinson dot plot Sweep
+function dotPlotBin(data,markSize) {
+  data = data.sort();
+  var bins = [];
+  var curx = x(0);
+  var curIndex = -1;
+  var dX;
+  for(var i = 0;i<data.length;i++){
+    dX = x(data[i]);
+    if(i==0 || dX>curx+markSize){
+      curIndex++;
+      bins[curIndex] = {"value": data[i], "count": 1, "sum" : data[i]};
+    }
+    else{
+      bins[curIndex].count++;
+      bins[curIndex].sum+= data[i];
+      bins[curIndex].value = bins[curIndex].sum / bins[curIndex].count;
+    }
+    curx = x(bins[curIndex].value);
+  }
+  return bins;
+}
