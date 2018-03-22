@@ -376,10 +376,8 @@ var nextQuestion = function(){
   console.log(this.responseText);
   questionIndex++;
   //Check to see if the next question is the last one
-  if(questionIndex==stimuli.length-1){
-    d3.select("#confirmBtn")
-      .attr("type","submit")
-      .attr("onclick","window.location.href='/post.html'");
+  if(questionIndex==stimuli.length){
+    window.location.href="/demographics.html";
   }
 
   d3.select("#readyBtn")

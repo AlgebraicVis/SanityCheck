@@ -1,0 +1,49 @@
+<html>
+<head>
+<title>Perception of Data Quality Issues in Viusualizations</title>
+<link rel="stylesheet" type="text/css" href="./src/style.css" />
+<script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+  <p>This completes the main task. We will now ask you a brief series of demographics questions. You will also have the chance to give feedback.</p>
+  <form id="demoform" method="post" action="post.php">
+    <input type="hidden" name="experiment" value="test">
+    <input type="hidden" name="id" value="id">
+    <ol>
+      <li>Do you have normal vision (or vision which has been corrected to normal)? <br>
+        <label><input type="radio" name="vision" required="required" value="Yes"><span>Yes <br></span></label>
+          <label><input type="radio" name="vision" required="required" value="No"><span>No <br></span></label>
+      </li>
+
+      <li>What is your gender <br>
+        <label><input type="radio" name="gender" required="required" value="Male"><span>Male<br></span></label>
+        <label><input type="radio" name="gender" required="required" value="Female"><span>Female<br></span></label>
+        <label><input type="radio" name="gender" required="required" value="Other"><span>Other<br></span></label>
+        <label><input type="radio" name="gender" required="required" value="Decline to state"><span>Decline to state<br></span></label>
+      </li>
+
+      <li>What is your highest level of education? <br>
+        <label><input type="radio" name="education" required="required" value="Some high school"><span>Some high school<br></span></label>
+        <label><input type="radio" name="education" required="required" value="High school degree"><span>High school degree<br></span></label>
+        <label><input type="radio" name="education" required="required" value="Some college"><span>Some college<br></span></label>
+        <label><input type="radio" name="education" required="required" value="College degree"><span>College degree<br></span></label>
+        <label><input type="radio" name="education" required="required" value="Graduate degree"><span>Graduate degree<br></span></label>
+      </li>
+
+      <li>How do you rate your experience interpreting graphs and charts (1-5)? <br>
+        <label><input type="radio" name="experience" required="required" value="0"><span>1. No experience<br></span></label>
+        <label><input type="radio" name="experience" required="required" value="1"><span>2.<br></span></label>
+        <label><input type="radio" name="experience" required="required" value="2"><span>3. Some experience<br></span></label>
+        <label><input type="radio" name="experience" required="required" value="3"><span>4.<br></span></label>
+        <label><input type="radio" name="experience" required="required" value="4"><span>5. A great deal of experience<br></span></label>
+      </li>
+
+      <li>What is your age? <br><input type="number" name="age" required="required" min="18" max="100"></li>
+
+      <li>Any additional comments of feedback? <br><textarea name="comments" rows="4" cols="50"></textarea></li>
+      <input type="submit" value="Submit" />
+    </ol>
+  </form>
+</body>
+
+</html>

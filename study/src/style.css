@@ -24,3 +24,11 @@
   border-width: 5px;
   border-color: #333;
 }
+
+#prompt{
+  color: gray;
+}
+
+#prompt span{
+  color: black;
+}
