@@ -4,7 +4,6 @@
 <title>Perception of Data Quality Issues in Viusualizations</title>
 <script src="https://vega.github.io/datalib/datalib.min.js"></script>
 <script src="https://d3js.org/d3.v4.min.js"></script>
-<script src="./src/script.js"></script>
 </head>
 <body>
 <!-- Progress Bar -->
@@ -13,7 +12,7 @@
 <!-- Question Prompt -->
 <div id="prompt">
 <!-- We will ask them to identify which chart has a certain type of flaw. -->
-<p>You will be shown data from 20 different factories. One of these factories has <span id="flawType">a flaw</span>.
+<p>You will be shown 20 different sets of data. One of these datasets has <span id="flawType">a flaw</span>.
   Click on the graph with the flawed data, and click the <b>Confirm</b> button to move on.</p>
 </div>
 
@@ -26,4 +25,5 @@
 <div id="panel">
 </div>
 </body>
+<script src="./src/script.js"></script>
 </html>

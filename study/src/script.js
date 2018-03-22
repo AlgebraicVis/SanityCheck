@@ -67,6 +67,7 @@ var makeStimuli = function(permute){
   if(permute){
     dl.permute(stimuli);
   }
+  d3.select("#progress").html("Question 1/"+stimuli.length);
   return stimuli;
 }
 
@@ -357,15 +358,22 @@ var answer = function(){
 
   d3.select("#panel").selectAll("svg").remove("*");
 
-  d3.select("#readyBtn")
-    .style("visibility",null)
-    .attr("disabled",null);
+  writeAnswer(participantData[questionIndex]);
+}
 
-  d3.select("#confirmBtn")
-    .attr("disabled","disabled");
+var writeAnswer = function(response) {
+  //Called when we answer a question in the first task
+  //XML to call out to a php script to store our data in a csv over in ./data/
+  var writeRequest = new XMLHttpRequest();
+  var writeString = "answer=" + JSON.stringify(response);
+  writeRequest.open("GET", "data/writeJSON.php?" + writeString, true);
+  writeRequest.setRequestHeader("Content-Type", "application/json");
+  writeRequest.addEventListener("load", nextQuestion);
+  writeRequest.send();
+}
 
-    d3.select("#flawType").html("a flaw");
-
+var nextQuestion = function(){
+  console.log(this.responseText);
   questionIndex++;
   //Check to see if the next question is the last one
   if(questionIndex==stimuli.length-1){
@@ -373,7 +381,18 @@ var answer = function(){
       .attr("type","submit")
       .attr("onclick","window.location.href='/post.html'");
   }
+
+  d3.select("#readyBtn")
+    .style("visibility",null)
+    .attr("disabled",null);
+
+  d3.select("#confirmBtn")
+    .attr("disabled","disabled");
+
+  d3.select("#flawType").html("a flaw");
+
   document.body.scrollTop = document.documentElement.scrollTop = 0;
+  d3.select("#progress").html("Question "+(questionIndex+1)+"/"+stimuli.length);
 }
 
 var cheat = function(){
