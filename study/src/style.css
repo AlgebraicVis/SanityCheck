@@ -32,3 +32,40 @@
 #prompt span{
   color: black;
 }
+
+.fig{
+  display:flex;
+  flex-wrap: wrap;
+  width: 50%;
+  margin: auto;
+  justify-content: center;
+}
+
+.figImg{
+    width: 30%;
+}
+
+.figCaption{
+  font-size: 85%;
+  align-self: center;
+}
+
+input[type="submit"], button{
+  background-color: #333;
+  border: none;
+  color: white;
+  padding: 5px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+input[type="submit"]:disabled, button:disabled{
+    background-color: #ddd;
+}
+
+input[type="submit"]:hover:enabled, button:hover:enabled{
+    background-color: #555;
+}

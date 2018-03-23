@@ -6,7 +6,8 @@ Study Parameters
 var makeStimuli = function(permute){
   var stimuli = [];
   //what distribution type the null is generated from
-  var distributions = ["uniform","normal","exponential"];
+  //var distributions = ["uniform","normal","exponential"];
+  var distributions = ["normal"];
   //what "flaw" is introduced to the null
   var flaws = ["spike","gap","outliers"];
   //how big this flaw is, in terms of points added/removed.
@@ -14,7 +15,9 @@ var makeStimuli = function(permute){
   //have to make up this difference with more/fewer samples from the null
   var flawMagnitude = [10,15,20];
   //viz type
-  var vizTypes = ["scatter","histogram","density"];
+
+  //var vizTypes = ["scatter","histogram","density"];
+  var vizTypes = ["scatter","histogram"];
   //viz parameters
   //kde bandwidth
   //note that silverman's would prefer 0.07 for the gaussian case
@@ -23,11 +26,14 @@ var makeStimuli = function(permute){
   //note that sturge's rule would give us only 7!
   var bins = [7,14,28];
   //scatterplot opacity
-  var opacities = [0.05,0.15,0.3];
+  //note that the default is 0.7 in Vega-lite
+  var opacities = [0.175,0.35,0.7];
 
   var replicates = 1;
   var stimulis;
   var parameters;
+  var id=gup("id");
+  id = id ? id : "EMPTY";
 
   //currently all blocked effects. We'd potentially want some of these to be random, such
   //as distribution type
@@ -57,6 +63,7 @@ var makeStimuli = function(permute){
               stimulis.magnitude = magnitude;
               stimulis.vis = vis;
               stimulis.parameter = parameter;
+              stimulis.id = id;
               stimuli.push(stimulis);
             }
           }
@@ -372,12 +379,23 @@ var writeAnswer = function(response) {
   writeRequest.send();
 }
 
+function gup(name) {
+  var regexS = "[\\?&]" + name + "=([^&#]*)";
+  var regex = new RegExp( regexS );
+  var tmpURL = window.location.href;
+  var results = regex.exec( tmpURL );
+  if ( results == null )
+  return "";
+  else
+  return results[1];
+}
+
 var nextQuestion = function(){
   console.log(this.responseText);
   questionIndex++;
   //Check to see if the next question is the last one
   if(questionIndex==stimuli.length){
-    window.location.href="/demographics.html";
+    window.location.href="/demographics.html?id="+id;
   }
 
   d3.select("#readyBtn")

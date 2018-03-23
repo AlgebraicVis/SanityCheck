@@ -4,7 +4,8 @@
 <link rel="stylesheet" type="text/css" href="./src/style.css" />
 <script src="./src/config.js"></script>
 <script src="https://d3js.org/d3.v4.min.js"></script>
-
+</head>
+<body>
 <?php
 // Write all of our demographics information to demo.csv
 // Again, DO NOT commit demo.csv to a public repo. It might contain TurkIDs, and by default contains IPs (as a backup if the Turk ID fails to link).
@@ -22,7 +23,7 @@ if(true || is_writable($path)){
       echo "Cannot write to $path";
       exit;
     }
-    echo "Wrote header $header to $path";
+    //echo "Wrote header $header to $path";
   }
 
   $id = $_POST['id'];
@@ -45,8 +46,8 @@ if(true || is_writable($path)){
     echo "Cannot write to $path";
     exit;
   }
-
-  echo "wrote $writestr to $path";
+  echo "<p>You are now finished with this experiment. Thank you for your participation.</p>";
+  //echo "wrote $writestr to $path";
 
   fclose($file);
 }
@@ -55,10 +56,6 @@ else{
   exit;
 }
 ?>
-
-</head>
-<body>
-  <p>You are now finished with this experiment. Thank you for your participation.</p>
   <p>If you have any further questions, consult the <a href="consent.html" target="_blank">consent form.</a></p>
   <p>If you have issues submitting, the Prolific completion code for this survey is <b><span id="prolificCode"></span></b> <button onclick="copyText()" type="button">Copy</button>.</p>
 

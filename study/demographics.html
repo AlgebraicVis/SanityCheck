@@ -8,12 +8,8 @@
   <p>This completes the main task. We will now ask you a brief series of demographics questions. You will also have the chance to give feedback.</p>
   <form id="demoform" method="post" action="post.php">
     <input type="hidden" name="experiment" value="test">
-    <input type="hidden" name="id" value="id">
+    <input type="hidden" id="id" name="id" value="id">
     <ol>
-      <li>Do you have normal vision (or vision which has been corrected to normal)? <br>
-        <label><input type="radio" name="vision" required="required" value="Yes"><span>Yes <br></span></label>
-          <label><input type="radio" name="vision" required="required" value="No"><span>No <br></span></label>
-      </li>
 
       <li>What is your gender <br>
         <label><input type="radio" name="gender" required="required" value="Male"><span>Male<br></span></label>
@@ -44,6 +40,20 @@
       <input type="submit" value="Submit" />
     </ol>
   </form>
+  <script>
+  function gup(name) {
+    var regexS = "[\\?&]" + name + "=([^&#]*)";
+    var regex = new RegExp( regexS );
+    var tmpURL = window.location.href;
+    var results = regex.exec( tmpURL );
+    if ( results == null )
+    return "";
+    else
+    return results[1];
+  }
+  var id = gup("id");
+  d3.select("#id").attr("value",id);
+  </script>
 </body>
 
 </html>

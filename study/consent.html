@@ -31,10 +31,17 @@
       <p>While there will probably be publications as a result of this study, your name or participant ID will not be used. Only group characteristics will be published.</p>
 
     <p>
-      By clicking "I Agree", you acknowledge that you have read and understood this consent form.
+      By entering your Prolific ID (visible on your profile page) and clicking "I Agree", you acknowledge that you have read and understood this consent form.
     </p>
     <p>
-      <a href="tutorial.html"><button type="button">I Agree</button></a>
+      <form method="GET" action="tutorial.html">
+        <p>
+          Prolific ID: <input type="text" name="id" required="required" />
+        </p>
+        <p>
+          <input type="submit" value="I Agree" />
+        </p>
+      </form>
     </p>
 </body>
 </html>
