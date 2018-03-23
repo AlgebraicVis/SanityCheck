@@ -16,8 +16,8 @@ var makeStimuli = function(permute){
   var flawMagnitude = [10,15,20];
   //viz type
 
-  //var vizTypes = ["scatter","histogram","density"];
-  var vizTypes = ["scatter","histogram"];
+  var vizTypes = ["scatter","histogram","density"];
+  //var vizTypes = ["scatter","histogram"];
   //viz parameters
   //kde bandwidth
   //note that silverman's would prefer 0.07 for the gaussian case
