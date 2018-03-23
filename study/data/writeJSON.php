@@ -17,18 +17,15 @@
   $answer = json_decode($rawAnswer,true);
   $cleaned = $_GET['clean'];
 
-  if($answer['id']=="EMPTY"){
+  if($answer['id']=="EMPTY" || $answer['id']==""){
     $path = 'test.csv';
   }
   else{
     $path = $answer['id'].'.csv';
   }
 
-  if(is_writable($path)){
-    if(!$file = fopen($path,'w')){
-      echo "Cannot open $path";
-      exit;
-    }
+  if(true || is_writable($path)){
+    $file = fopen($path,'a') or die("Cannot open $path");
 
     $keys = array_keys($answer);
     if(filesize($path)==0){
@@ -42,7 +39,7 @@
         echo "Cannot write to $path";
         exit;
       }
-      echo "Wrote header $header to $path";
+      echo "Wrote header $header to $path".PHP_EOL;
     }
 
     //Write all the values we have.

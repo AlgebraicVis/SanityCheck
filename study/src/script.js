@@ -353,7 +353,7 @@ var answer = function(){
   rt = new Date()-rt;
   console.log("Correct?: "+right);
   participantData[questionIndex] = stimuli[questionIndex];
-  participantData[questionIndex].correct = right;
+  participantData[questionIndex].correct = right ? "TRUE" : "FALSE";
   participantData[questionIndex].rt = rt;
 
   d3.select("#panel").selectAll("svg").remove("*");

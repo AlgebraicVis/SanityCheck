@@ -12,11 +12,8 @@
 // DO make sure that the server can write to demo.csv
 
 $path = 'data/demo.csv';
-if(is_writable($path)){
-  if(!$file = fopen('demo.csv','w')){
-    echo "Cannot open $path";
-    exit;
-  }
+if(true || is_writable($path)){
+  $file = fopen($path,'a') or die ("Cannot open $path");
 
   if(filesize($path)==0){
     //Make the header if we're the first entry
@@ -55,6 +52,7 @@ if(is_writable($path)){
 }
 else{
   echo "$path is not writable";
+  exit;
 }
 ?>
 
