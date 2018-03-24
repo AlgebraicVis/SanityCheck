@@ -347,16 +347,16 @@ var makeVizzes = function(stimulis){
   var glyph;
   switch(stimulis.flaw){
     case "spike":
-    glyph = '<img src="img/sglyph.png" />';
+    glyph = '<img class="glyph" src="img/sglyph.png" />';
     break;
 
     case "gap":
-    glyph = '<img src="img/gglyph.png" />';
+    glyph = '<img class="glyph" src="img/gglyph.png" />';
     break;
 
     case "outliers":
     default:
-    glyph = '<img src="img/oglyph.png" />';
+    glyph = '<img class="glyph" src="img/oglyph.png" />';
     break;
   }
   var text = stimulis.flaw=="outliers" ? "<b>"+stimulis.flaw+"</b>" : "a <b>"+stimulis.flaw+"</b>";
@@ -425,7 +425,7 @@ var nextQuestion = function(){
   questionIndex++;
   //Check to see if the next question is the last one
   if(questionIndex==stimuli.length){
-    window.location.href="/demographics.html?id="+stimuli[0].id;
+    window.location.href="demographics.html?id="+stimuli[0].id;
   }
 
   d3.select("#readyBtn")

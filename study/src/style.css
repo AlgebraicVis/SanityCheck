@@ -33,6 +33,10 @@
   color: black;
 }
 
+.glyph{
+    height: 1em;
+}
+
 .fig{
   display:flex;
   flex-wrap: wrap;
