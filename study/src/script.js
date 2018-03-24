@@ -329,8 +329,23 @@ var makeVizzes = function(stimulis){
     makeViz(curSvg,data[i],stimulis.parameter);
   }
 
-  var text = stimulis.flaw=="outliers" ? "<b>"+stimulis.flaw+"</b>" : "a <b>"+stimulis.flaw+"</b>";
+  var glyph;
+  switch(stimulis.flaw){
+    case "spike":
+    glyph = '<img src="img/sglyph.png" />';
+    break;
 
+    case "gap":
+    glyph = '<img src="img/gglyph.png" />';
+    break;
+
+    case "outliers":
+    default:
+    glyph = '<img src="img/oglyph.png" />';
+    break;
+  }
+  var text = stimulis.flaw=="outliers" ? "<b>"+stimulis.flaw+"</b>" : "a <b>"+stimulis.flaw+"</b>";
+  text+=glyph;
 
   d3.select("#flawType").html(text);
 }
