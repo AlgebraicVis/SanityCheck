@@ -27,14 +27,14 @@ var makeStimuli = function(permute){
   var bins = [7,14,28];
   //scatterplot opacity
   //note that the default is 0.7 in Vega-lite
-  var opacities = [0.175,0.35,0.7];
+  var opacities = [0.0875,0.175,0.35];
 
   var replicates = 1;
   var stimulis;
   var parameters;
   var id=gup("id");
   id = id ? id : "EMPTY";
-
+  var index = 1;
   //currently all blocked effects. We'd potentially want some of these to be random, such
   //as distribution type
   for(dist of distributions){
@@ -64,7 +64,9 @@ var makeStimuli = function(permute){
               stimulis.vis = vis;
               stimulis.parameter = parameter;
               stimulis.id = id;
+              stimulis.index = index;
               stimuli.push(stimulis);
+              index++;
             }
           }
         }
@@ -215,8 +217,21 @@ var makeVizzes = function(stimulis){
       data[0].push(sampler());
     }
     //spike values are a single mode in the iqr somewhere
+    //but NOT the mode
     var qs = dl.quartile(data[0]);
-    var spikeVal = dl.random.uniform(qs[0],qs[2])();
+    var spikeVal;
+    var halfQ;
+    if(Math.random()<0.5){
+      halfQ = 0.25*(qs[1]-qs[0]);
+      //place the spike in the first half
+      spikeVal = dl.random.uniform(qs[0],qs[0]+halfQ)();
+    }
+    else{
+      halfQ = 0.25*(qs[2]-qs[1]);
+      //place the spike in the second half
+      spikeVal = dl.random.uniform(qs[1],qs[1]+halfQ)();
+    }
+
     for(j = 0;j<flawSize;j++){
       data[0].push(spikeVal);
     }
@@ -410,7 +425,7 @@ var nextQuestion = function(){
   questionIndex++;
   //Check to see if the next question is the last one
   if(questionIndex==stimuli.length){
-    window.location.href="/demographics.html?id="+id;
+    window.location.href="/demographics.html?id="+stimuli[0].id;
   }
 
   d3.select("#readyBtn")
