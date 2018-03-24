@@ -391,11 +391,13 @@ var select = function(){
 //If it's the last question, go to the post test/wrap up screen
 var answer = function(){
   var right = d3.select(".selected").datum().flawed;
-  rt = new Date()-rt;
+  var timestamp = new Date();
+  rt = timestamp-rt;
   console.log("Correct?: "+right);
   participantData[questionIndex] = stimuli[questionIndex];
   participantData[questionIndex].correct = right ? "TRUE" : "FALSE";
   participantData[questionIndex].rt = rt;
+  participantData[questionIndex].timestamp = timestamp.toString();
 
   d3.select("#panel").selectAll("svg").remove("*");
 

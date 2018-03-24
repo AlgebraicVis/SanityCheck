@@ -15,7 +15,6 @@
   }
 
   $answer = json_decode($rawAnswer,true);
-  $cleaned = $_GET['clean'];
 
   if($answer['id']=="EMPTY" || $answer['id']==""){
     $path = 'test.csv';
