@@ -35,6 +35,7 @@ var makeStimuli = function(permute){
   var id=gup("id");
   id = id ? id : "EMPTY";
   var index = 1;
+  var i;
   //currently all blocked effects. We'd potentially want some of these to be random, such
   //as distribution type
   for(dist of distributions){
@@ -56,7 +57,7 @@ var makeStimuli = function(permute){
             break;
           }
           for(parameter of parameters){
-            for(var i = 0;i<replicates;i++){
+            for(i = 0;i<replicates;i++){
               stimulis = {};
               stimulis.distribution = dist;
               stimulis.flaw = flaw;
@@ -75,6 +76,9 @@ var makeStimuli = function(permute){
   }
   if(permute){
     dl.permute(stimuli);
+    for(i = 0;i<stimuli.length;i++){
+      stimuli[i].index = i+1;
+    }
   }
   d3.select("#progress").html("Question 1/"+stimuli.length);
   return stimuli;
