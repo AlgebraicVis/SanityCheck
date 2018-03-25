@@ -68,7 +68,7 @@ var makeStimuli = function(permute){
               stimulis.parameter = parameter;
               stimulis.id = id;
               stimulis.index = index;
-              stimuli.training="0";
+              stimulis.training="0";
               stimuli.push(stimulis);
               index++;
             }
@@ -81,7 +81,7 @@ var makeStimuli = function(permute){
   if(permute){
     dl.permute(stimuli);
   }
-  
+
   //Make IMT/training stimuli
   for(flaw of flaws){
     for(vis of vizTypes){
@@ -108,7 +108,7 @@ var makeStimuli = function(permute){
         stimulis.parameter = parameters[0];
         stimulis.id = id;
         stimulis.index = index;
-        stimuli.training="1";
+        stimulis.training="1";
         stimuli.unshift(stimulis);
         index++;
       }
