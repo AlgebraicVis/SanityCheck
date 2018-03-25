@@ -436,7 +436,7 @@ var answer = function(){
   rt = timestamp-rt;
   console.log("Correct?: "+right);
   participantData[questionIndex] = stimuli[questionIndex];
-  participantData[questionIndex].correct = right ? "TRUE" : "FALSE";
+  participantData[questionIndex].correct = right ? "1" : "0";
   participantData[questionIndex].rt = rt;
   participantData[questionIndex].timestamp = timestamp.toString();
   participantData[questionIndex].vizIndex = selected.attr("id");
