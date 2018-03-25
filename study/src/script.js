@@ -24,12 +24,13 @@ var makeStimuli = function(permute){
   var bandwidths = [0.0175,0.035,0.07];
   //histogram bins
   //note that sturge's rule would give us only 7!
-  var bins = [7,14,28];
+  var bins = [28,14,7];
   //scatterplot opacity
   //note that the default is 0.7 in Vega-lite
   var opacities = [0.0875,0.175,0.35];
 
   var replicates = 1;
+  var trainingReplicates = 1;
   var stimulis;
   var parameters;
   var id=gup("id");
@@ -38,6 +39,7 @@ var makeStimuli = function(permute){
   var i;
   //currently all blocked effects. We'd potentially want some of these to be random, such
   //as distribution type
+
   for(dist of distributions){
     for(flaw of flaws){
       for(magnitude of flawMagnitude){
@@ -66,6 +68,7 @@ var makeStimuli = function(permute){
               stimulis.parameter = parameter;
               stimulis.id = id;
               stimulis.index = index;
+              stimuli.training="0";
               stimuli.push(stimulis);
               index++;
             }
@@ -74,12 +77,48 @@ var makeStimuli = function(permute){
       }
     }
   }
+
   if(permute){
     dl.permute(stimuli);
-    for(i = 0;i<stimuli.length;i++){
-      stimuli[i].index = i+1;
+  }
+  
+  //Make IMT/training stimuli
+  for(flaw of flaws){
+    for(vis of vizTypes){
+      for(i=0;i<trainingReplicates;i++){
+        switch(vis){
+          case "scatter":
+            parameters = opacities;
+          break;
+
+          case "density":
+            parameters = bandwidths;
+          break;
+
+          case "histogram":
+          default:
+            parameters = bins;
+          break;
+        }
+        stimulis = {};
+        stimulis.distribution = "normal";
+        stimulis.flaw = flaw;
+        stimulis.magnitude = 25;
+        stimulis.vis = vis;
+        stimulis.parameter = parameters[0];
+        stimulis.id = id;
+        stimulis.index = index;
+        stimuli.training="1";
+        stimuli.unshift(stimulis);
+        index++;
+      }
     }
   }
+
+  for(i = 0;i<stimuli.length;i++){
+    stimuli[i].index = i+1;
+  }
+
   d3.select("#progress").html("Question 1/"+stimuli.length);
   return stimuli;
 }
@@ -345,6 +384,7 @@ var makeVizzes = function(stimulis){
   for(i = 0;i<data.length;i++){
     curSvg = d3.select("svg:nth-child("+(i+1)+")");
     curSvg.datum(data[i]);
+    curSvg.attr("id","viz"+(i+1));
     makeViz(curSvg,data[i],stimulis.parameter);
   }
 
@@ -390,7 +430,8 @@ var select = function(){
 //See how long it took
 //If it's the last question, go to the post test/wrap up screen
 var answer = function(){
-  var right = d3.select(".selected").datum().flawed;
+  var selected = d3.select(".selected");
+  var right = selected.datum().flawed;
   var timestamp = new Date();
   rt = timestamp-rt;
   console.log("Correct?: "+right);
@@ -398,6 +439,7 @@ var answer = function(){
   participantData[questionIndex].correct = right ? "TRUE" : "FALSE";
   participantData[questionIndex].rt = rt;
   participantData[questionIndex].timestamp = timestamp.toString();
+  participantData[questionIndex].vizIndex = selected.attr("id");
 
   d3.select("#panel").selectAll("svg").remove("*");
 

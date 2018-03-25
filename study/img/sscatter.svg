@@ -1,4 +1,12 @@
-<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg style="height: 100px; width: 200px;" id="spikeScatter" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs xmlns="http://www.w3.org/1999/xhtml"><style type="text/css"><![CDATA[
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.4, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="spikeScatter" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	 y="0px" width="200px" height="100px" viewBox="0.375 -0.5 200 100" enable-background="new 0.375 -0.5 200 100"
+	 xml:space="preserve">
+<defs  xmlns="http://www.w3.org/1999/xhtml">
+	<style  type="text/css">
+		<![CDATA[
 #panel { display: grid; grid-gap: 10px 10px; margin: 20px; }
 #panel button { align-self: center; margin: auto; }
 .vis { border-style: solid; border-width: 5px; border-color: rgb(255, 255, 255); }
@@ -11,4 +19,68 @@
 .figCaption { font-size: 85%; align-self: center; }
 input[type="submit"], button { background-color: rgb(51, 51, 51); border: none; color: white; padding: 5px 8px; text-align: center; text-decoration: none; display: inline-block; border-radius: 4px; font-size: 16px; }
 input[type="submit"]:disabled, button:disabled { background-color: rgb(221, 221, 221); }
-input[type="submit"]:hover:enabled, button:hover:enabled { background-color: rgb(85, 85, 85); }]]></style></defs><circle fill="#333" r="10" cx="73.99910220292557" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="42.5191553098209" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="96.38799246591975" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="104.56517175349596" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="79.7937976952669" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="73.2413103690291" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="65.48967425278711" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="69.09069639679613" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="119.85726121811354" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="74.6688223077865" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="96.2620559618766" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="159.85769343359672" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="132.57022379967012" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="71.6799088689625" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="146.31888438090135" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="81.53093135877528" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="105.18708621607054" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="119.49692707803925" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="74.93630704446" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="105.66355188690461" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="126.78410085176685" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="73.58844810334976" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="90.65353394850209" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="97.92187481973512" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="125.0877577485368" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="123.45521788956573" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="134.3415161855727" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="77.17297525294626" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="89.60626819141638" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="96.68842806411212" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="113.60830798897994" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="60.38402325084926" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="82.98690662539883" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="88.25017881445564" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="67.79708655041642" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="48.916003833584654" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="69.58207857635732" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="117.53877517841605" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="119.23987372564513" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="33.511889808088426" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="68.62606685693895" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="68.56356638190923" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="83.05509422616119" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="103.39755262799599" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="52.683198739512996" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="164.61634385525187" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="143.16266958249966" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="37.61297641565249" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="41.250064512474246" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="142.59942966337314" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="115.3504128584243" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="115.3504128584243" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="115.3504128584243" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="115.3504128584243" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="115.3504128584243" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="115.3504128584243" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="115.3504128584243" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="115.3504128584243" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="115.3504128584243" cy="50" opacity="0.15"/><circle fill="#333" r="10" cx="115.3504128584243" cy="50" opacity="0.15"/></svg>
+input[type="submit"]:hover:enabled, button:hover:enabled { background-color: rgb(85, 85, 85); }
+			]]>
+	</style>
+</defs>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="73.999" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="42.519" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="96.388" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="104.565" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="79.794" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="73.241" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="65.49" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="69.091" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="119.857" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="74.669" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="96.262" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="159.858" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="132.57" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="71.68" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="146.319" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="81.531" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="105.187" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="119.497" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="74.937" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="105.664" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="126.784" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="73.588" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="90.653" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="97.922" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="125.088" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="123.455" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="134.341" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="77.173" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="89.606" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="96.688" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="113.608" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="60.384" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="82.987" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="88.25" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="67.797" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="48.916" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="69.582" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="117.539" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="119.24" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="33.512" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="68.626" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="68.563" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="83.055" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="103.397" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="52.683" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="164.616" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="143.163" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="37.613" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="41.25" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="142.6" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="115.351" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="115.351" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="115.351" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="115.351" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="115.351" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="115.351" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="115.351" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="115.351" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="115.351" cy="50" r="10"/>
+<circle opacity="0.15" fill="#333333" enable-background="new    " cx="115.351" cy="50" r="10"/>
+</svg>
