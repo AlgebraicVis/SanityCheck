@@ -2,32 +2,33 @@
 Study Parameters
 ***/
 
+var distributions = ["normal"];
+//what "flaw" is introduced to the null
+var flaws = ["spike","gap","outliers"];
+//how big this flaw is, in terms of points added/removed.
+//we want to make sure all stim have the same number of points, so we
+//have to make up this difference with more/fewer samples from the null
+var flawMagnitude = [10,15,20];
+//viz type
+
+var vizTypes = ["scatter","histogram","density"];
+//var vizTypes = ["scatter","histogram"];
+//viz parameters
+//kde bandwidth
+//note that silverman's would prefer 0.07 for the gaussian case
+var bandwidths = [0.0175,0.035,0.07];
+//histogram bins
+//note that sturge's rule would give us only 7!
+var bins = [28,14,7];
+//scatterplot opacity
+//note that the default is 0.7 in Vega-lite
+var opacities = [0.0875,0.175,0.35];
+
 //Populate the trial stimuli, optionally permuting the trials
 var makeStimuli = function(permute){
   var stimuli = [];
   //what distribution type the null is generated from
   //var distributions = ["uniform","normal","exponential"];
-  var distributions = ["normal"];
-  //what "flaw" is introduced to the null
-  var flaws = ["spike","gap","outliers"];
-  //how big this flaw is, in terms of points added/removed.
-  //we want to make sure all stim have the same number of points, so we
-  //have to make up this difference with more/fewer samples from the null
-  var flawMagnitude = [10,15,20];
-  //viz type
-
-  var vizTypes = ["scatter","histogram","density"];
-  //var vizTypes = ["scatter","histogram"];
-  //viz parameters
-  //kde bandwidth
-  //note that silverman's would prefer 0.07 for the gaussian case
-  var bandwidths = [0.0175,0.035,0.07];
-  //histogram bins
-  //note that sturge's rule would give us only 7!
-  var bins = [28,14,7];
-  //scatterplot opacity
-  //note that the default is 0.7 in Vega-lite
-  var opacities = [0.0875,0.175,0.35];
 
   var replicates = 1;
   var trainingReplicates = 1;
@@ -222,6 +223,109 @@ var ready = function(){
   makeVizzes(stimuli[questionIndex]);
 };
 
+
+var makeGapData = function(flawSize,sampler){
+  var data = [];
+  //we're going to be removing values, so we need more samples initially
+  for(j = 0;j<numSamples+flawSize;j++){
+    data.push(sampler());
+  }
+  var qs = dl.quartile(data);
+  var gapVal = dl.random.uniform(qs[0],qs[2])();
+  //remove the n closest points to the gap value
+  var closer = function(a,b){
+    if( Math.abs(a-gapVal)>Math.abs(b-gapVal)){
+      return -1;
+    }
+    else if( Math.abs(a-gapVal)<Math.abs(b-gapVal)){
+      return 1;
+    }
+    else{
+      return 0;
+    }
+  }
+  data = data.sort(closer);
+  data = data.splice(0,numSamples);
+  console.log("gap of "+flawSize+" at "+gapVal);
+  return data;
+};
+
+var makeSpikeData = function(flawSize,sampler){
+  var data = [];
+  //all non-spike values
+  for(j = 0;j<numSamples-flawSize;j++){
+    data.push(sampler());
+  }
+  //spike values are a single mode in the iqr somewhere
+  //but NOT the mode
+  var qs = dl.quartile(data);
+  var spikeVal;
+  var halfQ;
+  if(Math.random()<0.5){
+    halfQ = 0.25*(qs[1]-qs[0]);
+    //place the spike in the first half
+    spikeVal = dl.random.uniform(qs[0],qs[0]+halfQ)();
+  }
+  else{
+    halfQ = 0.25*(qs[2]-qs[1]);
+    //place the spike in the second half
+    spikeVal = dl.random.uniform(qs[1],qs[1]+halfQ)();
+  }
+
+  for(j = 0;j<flawSize;j++){
+    data.push(spikeVal);
+  }
+  console.log("spike of "+flawSize+" at "+spikeVal);
+  return data;
+};
+
+var makeOutlierData = function(flawSize,sampler){
+  var data = [];
+  //all non-outlier values
+  for(j = 0;j<numSamples-flawSize;j++){
+    data.push(sampler());
+  }
+  //outlier values are anything in [0,1] that's outside of
+  // q1-1.5iqr or q3+1.5iqr
+  var qs = dl.quartile(data);
+  var iqr = qs[2]-qs[0];
+  var fenceMin = qs[0]-(1.5*iqr);
+  var fenceMax = qs[2]+(1.5*iqr);
+  //if our fences are out of [0,1], then we can't place outliers there
+  //but if BOTH fences are out of [0,1], then just place outliers in whichever of
+  //[0,1] is closest to the fence
+  //outliers will always be placed outside of just one of the fences
+  if(fenceMin<0 && fenceMax>1){
+    if(Math.abs(fenceMin)>Math.abs(fenceMax-1)){
+      console.log(flawSize+" outliers with value 1");
+      for(j = 0;j<flawSize;j++){
+        data.push(1);
+      }
+    }
+    else{
+      console.log(flawSize+" outliers with value 0");
+      for(j = 0;j<flawSize;j++){
+        data.push(0);
+      }
+    }
+  }
+  else if(fenceMin<0){
+    var osampler = dl.random.uniform(fenceMax,1);
+    console.log(flawSize+" outliers somewhere more than "+fenceMax);
+    for(j = 0;j<flawSize;j++){
+      data.push(osampler());
+    }
+  }
+  else{
+    var osampler = dl.random.uniform(0,fenceMin);
+    console.log(flawSize+" outliers somewhere less than "+fenceMin);
+    for(j = 0;j<flawSize;j++){
+      data.push(osampler());
+    }
+  }
+
+  return data;
+};
 //Create our data and draw our vizzes, given a setting of IVs
 //Need to:
 // create data with flaw
@@ -250,105 +354,20 @@ var makeVizzes = function(stimulis){
 
   //the first distribution is the flawed one
   //don't worry, we'll permute later.
-  data[0] = [];
 
   var flawSize = stimulis.magnitude;
   switch(stimulis.flaw){
     case "spike":
-    //all non-spike values
-    for(j = 0;j<numSamples-flawSize;j++){
-      data[0].push(sampler());
-    }
-    //spike values are a single mode in the iqr somewhere
-    //but NOT the mode
-    var qs = dl.quartile(data[0]);
-    var spikeVal;
-    var halfQ;
-    if(Math.random()<0.5){
-      halfQ = 0.25*(qs[1]-qs[0]);
-      //place the spike in the first half
-      spikeVal = dl.random.uniform(qs[0],qs[0]+halfQ)();
-    }
-    else{
-      halfQ = 0.25*(qs[2]-qs[1]);
-      //place the spike in the second half
-      spikeVal = dl.random.uniform(qs[1],qs[1]+halfQ)();
-    }
-
-    for(j = 0;j<flawSize;j++){
-      data[0].push(spikeVal);
-    }
-    console.log("spike of "+flawSize+" at "+spikeVal);
+    data[0] = makeSpikeData(flawSize,sampler);
     break;
 
     case "gap":
-    //we're going to be removing values, so we need more samples initially
-    for(j = 0;j<numSamples+flawSize;j++){
-      data[0].push(sampler());
-    }
-    var qs = dl.quartile(data[0]);
-    var gapVal = dl.random.uniform(qs[0],qs[2])();
-    //remove the n closest points to the gap value
-    var closer = function(a,b){
-      if( Math.abs(a-gapVal)>Math.abs(b-gapVal)){
-        return -1;
-      }
-      else if( Math.abs(a-gapVal)<Math.abs(b-gapVal)){
-        return 1;
-      }
-      else{
-        return 0;
-      }
-    }
-    data[0] = data[0].sort(closer);
-    data[0] = data[0].splice(0,numSamples);
-    console.log("gap of "+flawSize+" at "+gapVal);
+    data[0] = makeGapData(flawSize,sampler);
     break;
 
     case "outliers":
     default:
-    //all non-outlier values
-    for(j = 0;j<numSamples-flawSize;j++){
-      data[0].push(sampler());
-    }
-    //outlier values are anything in [0,1] that's outside of
-    // q1-1.5iqr or q3+1.5iqr
-    var qs = dl.quartile(data[0]);
-    var iqr = qs[2]-qs[0];
-    var fenceMin = qs[0]-(1.5*iqr);
-    var fenceMax = qs[2]+(1.5*iqr);
-    //if our fences are out of [0,1], then we can't place outliers there
-    //but if BOTH fences are out of [0,1], then just place outliers in whichever of
-    //[0,1] is closest to the fence
-    //outliers will always be placed outside of just one of the fences
-    if(fenceMin<0 && fenceMax>1){
-      if(Math.abs(fenceMin)>Math.abs(fenceMax-1)){
-        console.log(flawSize+" outliers with value 1");
-        for(j = 0;j<flawSize;j++){
-          data[0].push(1);
-        }
-      }
-      else{
-        console.log(flawSize+" outliers with value 0");
-        for(j = 0;j<flawSize;j++){
-          data[0].push(0);
-        }
-      }
-    }
-    else if(fenceMin<0){
-      var osampler = dl.random.uniform(fenceMax,1);
-      console.log(flawSize+" outliers somewhere more than "+fenceMax);
-      for(j = 0;j<flawSize;j++){
-        data[0].push(osampler());
-      }
-    }
-    else{
-      var osampler = dl.random.uniform(0,fenceMin);
-      console.log(flawSize+" outliers somewhere less than "+fenceMin);
-      for(j = 0;j<flawSize;j++){
-        data[0].push(osampler());
-      }
-    }
+    data[0] = makeOutlierData(flawSize,sampler);
     break;
   }
 
@@ -510,6 +529,63 @@ var scatter = function(svg,data,markOpacity){
 
 function testScatter(){
   scatter(d3.select("svg"),dl.random.uniform(0,1).samples(50),10,0.2);
+}
+
+//Parameter sweep for the purposes of figure generation.
+function parameterSweep(){
+    var odata = makeOutlierData(20,gaussian);
+    var sdata = makeSpikeData(20,gaussian);
+    var gdata = makeGapData(20,gaussian);
+    var parameters;
+
+    for(vis of vizTypes){
+      for(flaw of flaws){
+        d3.select("body").append("div").classed("sampleCaption",true).html(flaw);
+        var makeViz;
+        switch(vis){
+          case "density":
+            makeViz = density;
+            parameters = bandwidths;
+          break;
+
+          case "scatter":
+            makeViz = scatter;
+            parameters = opacities
+          break;
+
+          case "histogram":
+            makeViz = histogram;
+            parameters = bins;
+          default:
+          break;
+        }
+        var vizSvg;
+        var vizData;
+        switch(flaw){
+          case "outliers":
+          default:
+            vizData = odata;
+          break;
+
+          case "gap":
+            vizData = gdata;
+          break;
+
+          case "spike":
+            vizData = sdata;
+          break;
+        }
+
+        for(parameter of parameters){
+          var nameStr = vis+":"+flaw+":"+parameter;
+          vizSvg = d3.select("body").append("svg")
+            .style("width",vizWidth)
+            .style("height",vizHeight)
+            .attr("id",nameStr);
+          makeViz(vizSvg,vizData,parameter);
+        }
+      }
+    }
 }
 
 //Makes a histogram

@@ -55,6 +55,11 @@
   align-self: center;
 }
 
+.sampleCaption{
+  font-family: Futura,sans-serif;
+  font-size: 200%;
+}
+
 input[type="submit"], button{
   background-color: #333;
   border: none;
