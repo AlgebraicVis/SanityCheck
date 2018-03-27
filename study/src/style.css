@@ -58,6 +58,9 @@
 .sampleCaption{
   font-family: Futura,sans-serif;
   font-size: 200%;
+  position: absolute;
+  text-align: center;
+  left: 275px;
 }
 
 input[type="submit"], button{

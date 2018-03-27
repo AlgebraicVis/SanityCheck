@@ -533,14 +533,14 @@ function testScatter(){
 
 //Parameter sweep for the purposes of figure generation.
 function parameterSweep(){
-    var odata = makeOutlierData(20,gaussian);
-    var sdata = makeSpikeData(20,gaussian);
-    var gdata = makeGapData(20,gaussian);
+    var odata = makeOutlierData(15,gaussian);
+    var sdata = makeSpikeData(15,gaussian);
+    var gdata = makeGapData(15,gaussian);
     var parameters;
-
-    for(vis of vizTypes){
-      for(flaw of flaws){
-        d3.select("body").append("div").classed("sampleCaption",true).html(flaw);
+    d3.select("body").selectAll("*").remove("*");
+    for(flaw of flaws){
+      d3.select("body").append("div").classed("sampleCaption",true).html(flaw);
+      for(vis of vizTypes){
         var makeViz;
         switch(vis){
           case "density":
@@ -584,6 +584,7 @@ function parameterSweep(){
             .attr("id",nameStr);
           makeViz(vizSvg,vizData,parameter);
         }
+        d3.select("body").append("div").style("height","1em");
       }
     }
 }
