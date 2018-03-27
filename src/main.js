@@ -48,13 +48,13 @@ function drawClosest(good,bad){
   histogram(good,0,200,350,175,histResults.worst.bin);
   histogram(bad,400,200,350,175,histResults.worst.bin);
 
-  dotplot(good,0,500,350,25,dotResults.worst.markSize,dotResults.worst.alpha,true);
-  dotplot(bad,400,500,350,25,dotResults.worst.markSize,dotResults.worst.alpha,true);
+  dotplot(good,0,500,350,25,dotResults.worst.markSize,dotResults.worst.alpha,false);
+  dotplot(bad,400,500,350,25,dotResults.worst.markSize,dotResults.worst.alpha,false);
 
   kdeplot(good,0,600,350,175,kdeResults.worst.bandwidth);
   kdeplot(bad,400,600,350,175,kdeResults.worst.bandwidth);
 
-  text("Closest Vizzes in Mean Pixel Color Distance", 400,850);
+  text("Closest Visualizations (% Pixels Changed)", 400,850);
   text("Distribution", 200, 800);
   text("Distribution + Flaw(s)", 600, 800);
 }
@@ -70,13 +70,13 @@ function drawFurthest(good,bad){
   histogram(good,0,200,350,175,histResults.best.bin);
   histogram(bad,400,200,350,175,histResults.best.bin);
 
-  dotplot(good,0,500,350,25,dotResults.best.markSize,dotResults.best.alpha,true);
-  dotplot(bad,400,500,350,25,dotResults.best.markSize,dotResults.best.alpha,true);
+  dotplot(good,0,500,350,25,dotResults.best.markSize,dotResults.best.alpha,false);
+  dotplot(bad,400,500,350,25,dotResults.best.markSize,dotResults.best.alpha,false);
 
   kdeplot(good,0,600,350,175,kdeResults.best.bandwidth);
   kdeplot(bad,400,600,350,175,kdeResults.best.bandwidth);
 
-  text("Farthest Vizzes in Mean Pixel Color Distance", 400,850);
+  text("Furthest Visualizations (% Pixels Changed)", 400,850);
   text("Distribution", 200, 800);
   text("Distribution + Flaw(s)", 600, 800);
 }
@@ -97,8 +97,8 @@ function drawReasonable(good,bad){
   histogram(good,0,200,350,175,bins);
   histogram(bad,400,200,350,175,bins);
 
-  dotplot(good,0,500,350,25,markSize,markOpacity,true);
-  dotplot(bad,400,500,350,25,markSize,markOpacity,true);
+  dotplot(good,0,500,350,25,markSize,markOpacity,false);
+  dotplot(bad,400,500,350,25,markSize,markOpacity,false);
 
   kdeplot(good,0,600,350,175,sigma);
   kdeplot(bad,400,600,350,175,sigma);
@@ -152,7 +152,7 @@ function parameterSweep(good,bad,visType){
     break;
 
     case "histogram":
-    var bins = dl.range(3,51);
+    var bins = dl.range(5,51);
     for(var bin of bins){
       background(255);
       histogram(good,0,0,300,50,bin);
@@ -186,7 +186,7 @@ function parameterSweep(good,bad,visType){
     //valid mark sizes
     var ms = dl.range(10,26,1);
     //valid opacities
-    var as = dl.range(0.2,1.1,0.1);
+    var as = dl.range(0.05,1.05,0.05);
     for(var m of ms){
       for(var a of as){
         background(255);
@@ -275,7 +275,7 @@ function binEstimate(dist, rule){
     break;
   }
 
-  return numBins;
+  return numBins
 }
 
 //Dot Plot Sweep
