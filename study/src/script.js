@@ -589,6 +589,32 @@ function parameterSweep(){
     }
 }
 
+//Switch the current type of visualization, also for figure generation purposes.
+function changeVisType(newViz,newParameter){
+  var makeViz;
+  switch(newViz){
+    case "density":
+      makeViz = density;
+    break;
+
+    case "scatter":
+      makeViz = scatter;
+    break;
+
+    case "histogram":
+      makeViz = histogram;
+    default:
+    break;
+  }
+  var data = d3.selectAll("svg").data();
+  d3.selectAll("svg").selectAll("*").remove();
+  var anSvg;
+  for(var i = 0;i<data.length;i++){
+    anSvg = d3.select("#viz"+(i+1));
+    makeViz(anSvg,data[i],newParameter);
+  }
+}
+
 //Makes a histogram
 //Takes a target svg, a data set, and a bin size.
 var histogram = function(svg,data,binCount){
