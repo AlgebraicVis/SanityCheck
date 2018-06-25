@@ -1,0 +1,133 @@
+{
+  "data": {
+    "values": [
+      {
+        "magnitude": "10",
+        "midmean": 0.2083333,
+        "ci1": 0.1435185,
+        "ci2": 0.2731481,
+        "flaw": "Gap"
+      },
+      {
+        "magnitude": "15",
+        "midmean": 0.4212963,
+        "ci1": 0.3472222,
+        "ci2": 0.5000000,
+        "flaw": "Gap"
+      },
+      {
+        "magnitude": "20",
+        "midmean": 0.5277778,
+        "ci1": 0.4537037,
+        "ci2": 0.6064815,
+        "flaw": "Gap"
+      },
+      {
+        "magnitude": "10",
+        "midmean": 0.4398148,
+        "ci1": 0.3611111,
+        "ci2": 0.5138889,
+        "flaw": "Outliers"
+      },
+      {
+        "magnitude": "15",
+        "midmean": 0.5,
+        "ci1": 0.4259259,
+        "ci2": 0.5740741,
+        "flaw": "Outliers"
+      },
+      {
+        "magnitude": "20",
+        "midmean": 0.5185185,
+        "ci1": 0.4490741,
+        "ci2": 0.5925926,
+        "flaw": "Outliers"
+      },
+      {
+        "magnitude": "10",
+        "midmean": 0.3888889,
+        "ci1": 0.3055556,
+        "ci2": 0.4629630,
+        "flaw": "Spike"
+      },
+      {
+        "magnitude": "15",
+        "midmean": 0.6296296,
+        "ci1": 0.5601852,
+        "ci2": 0.7037037,
+        "flaw": "Spike"
+      },
+      {
+        "magnitude": "20",
+        "midmean": 0.7453704,
+        "ci1": 0.6712963,
+        "ci2": 0.8194444,
+        "flaw": "Spike"
+      }
+    ]
+  },
+  "facet": {
+    "column": {
+      "field": "flaw",
+      "type": "nominal",
+      "header": {
+        "title": "Flaw Type"
+      }
+    }
+  },
+  "spec": {
+    "layer": [
+      {
+        "width": 200,
+        "height": 300,
+        "mark": "rule",
+        "encoding": {
+          "x": {
+            "field": "magnitude",
+            "type": "ordinal",
+            "axis": {
+              "title": "Flaw Magnitude",
+              "titlePadding": 10
+            }
+          },
+          "y": {
+            "field": "ci1",
+            "type": "quantitative",
+            "axis": {
+              "title": "Accuracy"
+            }
+          },
+          "y2": {
+            "field": "ci2",
+            "type": "quantitative"
+          },
+          "size": {
+            "value" : 1.5
+          }
+        }
+      },
+      {
+        "mark": "circle",
+        "encoding": {
+          "x": {
+            "field": "magnitude",
+            "type": "ordinal"
+          },
+          "y": {
+            "field": "midmean",
+            "key": "quantitative"
+          },
+          "opacity": {
+            "value": 1
+          },
+          "size": {
+            "value": 50
+          },
+          "color": {
+            "value" : "black"
+          }
+        }
+      }
+    ]
+  }
+}

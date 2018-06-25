@@ -1,0 +1,139 @@
+{
+  "data": {
+    "values": [
+      {
+        "parameter": 0.0175,
+        "midmean": 0.4583333,
+        "ci1": 0.3329861,
+        "ci2": 0.5833333 ,
+        "vis": "density"
+      },
+       {
+        "parameter": 0.035,
+        "midmean": 0.4861111,
+        "ci1": 0.3472222,
+        "ci2": 0.6250000,
+        "vis": "density"
+      },
+      {
+        "parameter": 0.07,
+        "midmean": 0.3611111,
+        "ci1": 0.2500000,
+        "ci2": 0.4861111,
+        "vis": "density"
+      },
+      {
+        "parameter": "c7",
+        "midmean": 0.06944444,
+        "ci1": 0,
+        "ci2": 0.1666667,
+        "vis": "histogram"
+      },
+       {
+        "parameter": "b14",
+        "midmean": 0.3611111,
+        "ci1":  0.2361111,
+        "ci2": 0.4861111,
+        "vis": "histogram"
+      },
+      {
+        "parameter": "a28",
+        "midmean": 0.3333333,
+        "ci1": 0.2083333,
+        "ci2": 0.4583333,
+        "vis": "histogram"
+      },
+      {
+        "parameter": "0.0875",
+        "midmean": 0.4861111,
+        "ci1": 0.3611111,
+        "ci2": 0.6250000,
+        "vis": "scatter"
+      },
+       {
+        "parameter": "0.175",
+        "midmean": 0.4861111,
+        "ci1": 0.3750000,
+        "ci2": 0.6111111,
+        "vis": "scatter"
+      },
+      {
+        "parameter": "0.35",
+        "midmean": 0.4305556,
+        "ci1": 0.2916667,
+        "ci2": 0.5555556,
+        "vis": "scatter"
+      }
+    ]
+  },
+  "facet": {
+    "column": {
+      "field": "vis",
+      "type": "nominal",
+      "header": {
+        "title": "Gap Detection"
+      }
+    }
+  },
+  "spec": {
+    "layer": [
+      {
+        "width": 200,
+        "height": 300,
+        "mark": "rule",
+        "encoding": {
+          "x": {
+            "field": "parameter",
+            "type": "ordinal",
+            "axis": {
+              "title": "Design Parameter",
+              "titlePadding": 10,
+              "labelAngle": 0
+            }
+          },
+          "y": {
+            "field": "ci1",
+            "type": "quantitative",
+            "scale" : {
+              "domain" : [0,1]
+            },
+            "axis": {
+              "title": "Accuracy"
+
+            }
+          },
+          "y2": {
+            "field": "ci2",
+            "type": "quantitative"
+          },
+          "size": {
+            "value" : 1.5
+          }
+        }
+      },
+      {
+        "mark": "circle",
+        "encoding": {
+          "x": {
+            "field": "parameter",
+            "type": "ordinal"
+          },
+          "y": {
+            "field": "midmean",
+            "key": "quantitative"
+          },
+          "opacity": {
+            "value": 1
+          },
+          "size": {
+            "value": 50
+          },
+          "color": {
+            "value" : "black"
+          }
+        }
+      }
+    ]
+  },
+  "resolve": {"scale": {"x": "independent"}}
+}
