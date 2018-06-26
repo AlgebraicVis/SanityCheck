@@ -1,4 +1,4 @@
-# Black Hat Visualization
+# Looks Good To Me: Visualizations As Sanity Checks
 This repository contains supporting information for our submission to [InfoVis 2018](http://ieeevis.org/year/2018/welcome), *Looks Good To Me: Visualizations As Sanity Checks*. A preprint of the paper is available [here](InfoVis/preprint.pdf).
 
 It is also part of a larger project of examining *Black Hat Visualization*: can visualizations designed unthinkingly or maliciously *hide* important information from analysts, or otherwise *mislead* people? We lay out this concept in a [position paper](DECISIVe/Paper.pdf) for the [DECISIVe 2017](http://decisive-workshop.dbvis.de/) workshop.
