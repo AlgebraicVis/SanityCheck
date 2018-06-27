@@ -54,7 +54,7 @@ function drawClosest(good,bad){
   kdeplot(good,0,600,350,175,kdeResults.worst.bandwidth);
   kdeplot(bad,400,600,350,175,kdeResults.worst.bandwidth);
 
-  text("Closest Visualizations (% Pixels Changed)", 400,850);
+  text("Closest Visualizations (Pixels Change)", 400,850);
   text("Distribution", 200, 800);
   text("Distribution + Flaw(s)", 600, 800);
 }
@@ -191,7 +191,7 @@ function parameterSweep(good,bad,visType){
       for(var a of as){
         background(255);
         dotplot(good,0,0,300,50,m,a,true);
-        dotplot(bad,0,55,300,50,m,a,true);
+        dotplot(bad,0,50,300,50,m,a,true);
         diff = imgDiff(0,0,0,50,300,50);
         var obj = {"alpha": a, "markSize": m, "diff": diff};
         if(first){
@@ -218,9 +218,12 @@ function parameterSweep(good,bad,visType){
     break;
   }
 
+  best.label = "best";
+  worst.label = "worst";
   results.worst = worst;
   results.best = best;
   console.log(best);
+  console.log(worst);
   return results;
 }
 
@@ -340,7 +343,7 @@ function imgDiff(x1, x2, y1, y2, w, h){
   for(var i = 0;i<i1.length;i+=4){
     c1 = d3.rgb(i1[i], i1[i+1], i1[i+2], i1[i+3] / 255);
     c2 = d3.rgb(i2[i], i2[i+1], i2[i+2], i2[i+3] / 255);
-    sumDiff+= bDiff(c1,c2);
+    sumDiff+= cDiff(c1,c2);
   }
   return sumDiff / (i1.length / 4);
 }
