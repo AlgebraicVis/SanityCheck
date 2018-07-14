@@ -24,4 +24,4 @@ The data are contained in the [Data](data/) folder.
 
 The data we used for our main analysis is `cleanData.csv`, which is `rawData.csv` but with training stimuli, participants who did not complete the task, participants who did not successfully answer any of the training stimuli, and any duplicate rows excluded. 
 
-Additionally, [vegalite_specs](data/vegalite_specs) contains [Vega-Like](https://vega.github.io/vega-lite/) JSON specifications for generating the figures we use in the paper.
+Additionally, [vegalite_specs](data/vegalite_specs) contains [Vega-Lite](https://vega.github.io/vega-lite/) JSON specifications for generating the figures we use in the paper.
