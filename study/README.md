@@ -6,7 +6,7 @@ The study requires PHP and javascript to run successfully.
 
 The data are contained in the [Data](data/) folder.
 
-`demo.csv` contains anonymized information about the study participants in each experiment.
+`cleanDemo.csv` contains anonymized information about the study participants in each experiment.
 `rawData.csv` contains the responses for all participants, with the following columns:
 
 * `id`: The anonymized participant ID.
@@ -22,6 +22,6 @@ The data are contained in the [Data](data/) folder.
 * `vizIndex`: Which visualization the participant clicked on, from "viz1" (the visualization in the top left corner of the 5x4 lineup grid) to "viz20" (the visualization in the bottom right corner).
 * `excluded`: Whether the performance of this participant on training trials was so poor as to justify exclusion from our analysis (1) or not (0).
 
-The data we used for our main analysis is `cleanData.csv`, which is `rawData.csv` but with training stimuli, participants who did not complete the task, participants who did not successfully answer any of the training stimuli, and any duplicate rows excluded. 
+The data we used for our main analysis is `cleanData.csv`, which is `rawData.csv` but with training stimuli, participants who did not complete the task, participants who did not successfully answer any of the training stimuli, and any duplicate rows excluded.
 
 `analysis.R` is the R script used to conduct the analyses in the paper. Additionally, [vegalite_specs](data/vegalite_specs) contains [Vega-Lite](https://vega.github.io/vega-lite/) JSON specifications for generating the figures we use in the paper.
