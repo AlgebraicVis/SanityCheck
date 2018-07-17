@@ -76,7 +76,7 @@ function drawFurthest(good,bad){
   kdeplot(good,0,600,350,175,kdeResults.best.bandwidth);
   kdeplot(bad,400,600,350,175,kdeResults.best.bandwidth);
 
-  text("Furthest Visualizations (% Pixels Changed)", 400,850);
+  text("Furthest Visualizations (Pixel Change)", 400,850);
   text("Distribution", 200, 800);
   text("Distribution + Flaw(s)", 600, 800);
 }
