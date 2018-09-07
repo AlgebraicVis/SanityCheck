@@ -1,10 +1,36 @@
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="./src/style.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.js"></script>
 <script src="https://vega.github.io/datalib/datalib.min.js"></script>
 <script src="https://d3js.org/d3-color.v1.min.js"></script>
 <script src="./src/main.js"></script>
 </head>
 <body>
+<h1>Adversarial Visualization Creation Kit</h1>
+<p>
+  Use this tool to create "Adversarial" Univariate Visualizations of a distribution.
+  Create an initial "innocent" distribution of 100 samples from a Gaussian, and then introduce a set of data quality issues/flaws.
+  Then, use the "Run" button to find parameter settings to find sets of visualizations of the original and flawed datasets that are most similar (in terms of changed pixels). That is, visualizations that stand a good chance of hiding the data flaws that you've introduced.
+</p>
+<p>
+  Once simulated, click the canvas to cycle through the parameter settings that would be the default in most software systems a priori, the paramemter settings that result in the closest visualizations (least pixels changed) and those that produce the furthest visualizations (most pixels changed).
+</p>
+<div>
+  <h2>Flaw Types:</h2>
+  <table>
+    <tr><td>Noise:</td><td><input oninput="updateLabels()" class="slider" type="range" id="noiseVal" min="0" max="0.25" step="0.01" value="0"/></td><td id="noiseLabel">0</td></tr>
+    <tr><td>Mean Bias:</td><td><input oninput="updateLabels()" class="slider" type="range" id="biasVal" min="-0.5" max="0.5" value="0" step="0.05"/></td><td id="biasLabel">0</td></tr>
+    <tr><td>Outliers:</td><td><input oninput="updateLabels()" class="slider" type="range" id="outlierVal" min="0" max="20" step="1" value="0"/></td><td id="outlierLabel">0</td></tr>
+    <tr><td>Mode:</td><td><input oninput="updateLabels()" class="slider" type="range" id="modeVal" min="0" max="20" step="1" value="0"/></td><td id="modeLabel">0</td></tr>
+  </table>
+</div>
+<div>
+<!--  <input id="sampleBtn" type="submit" onclick="createBad()" value="Add Flaws" /> -->
+  <input id="sampleBtn" type="submit" onclick="resample()" value="Re-Sample" />
+</div>
+<div>
+  <input id="simBtn" type="submit" onclick="simulate()" value="Simulate" />
+</div>
 </body>
 </html>

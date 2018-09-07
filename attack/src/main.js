@@ -2,110 +2,129 @@ var tableauGray;
 
 var good,bad,kdeResults,dotResults,histResults;
 
+var labels = ["Visualizations with A Priori Parameters",
+"Closest Visualizations (Pixels Change)",
+"Furthest Visualizations (Pixel Change)"
+];
+
+var ranSimulation = false;
+
 function setup(){
-  createCanvas(1000,950);
+  createCanvas(850,750);
   background(255);
   tableauGray = color("#333");
   textFont("Futura",24);
   textAlign(CENTER);
-  good = nNormal(50,0.5,0.15);
-  bad = addNoise(addBias(addMode(addOutlier(good,0),10),0),0);
+  good = nNormal(100,0.7,0.15);
+  bad = good.slice();
   mode = 0;
-  kdeResults = parameterSweep(good,bad,"kde");
-  dotResults = parameterSweep(good,bad,"dot");
-  histResults = parameterSweep(good,bad,"histogram");
-  drawReasonable(good,bad);
+  drawPair(good,bad);
+}
+
+function simulate(){
+  document.getElementById("simBtn").disabled = "disabled";
+  document.getElementById("simBtn").value = "Running...";
+  setTimeout(function(){runSimulation()},50);
+}
+
+function resample(){
+  good = nNormal(100,0.7,0.15);
+  createBad();
+  ranSimulation = false;
+  document.getElementById("simBtn").disabled = null;
+  drawPair(good,bad);
+}
+
+function updateLabels(){
+  var noiseVal = +document.getElementById("noiseVal").value;
+  var outlierVal = +document.getElementById("outlierVal").value;
+  var biasVal = +document.getElementById("biasVal").value;
+  var modeVal = +document.getElementById("modeVal").value;
+
+  document.getElementById("noiseLabel").innerHTML = noiseVal;
+  document.getElementById("outlierLabel").innerHTML = outlierVal;
+  document.getElementById("biasLabel").innerHTML = biasVal;
+  document.getElementById("modeLabel").innerHTML = modeVal;
+
+  createBad();
+}
+
+function createBad(){
+  var noiseVal = +document.getElementById("noiseVal").value;
+  var outlierVal = +document.getElementById("outlierVal").value;
+  var biasVal = +document.getElementById("biasVal").value;
+  var modeVal = +document.getElementById("modeVal").value;
+  bad = addNoise(addOutlier(addBias(addMode(good,modeVal),biasVal),outlierVal),noiseVal);
+  ranSimulation = false;
+  document.getElementById("simBtn").disabled = null;
+  drawPair(good,bad);
+}
+
+async function runSimulation(){
+  kdeResults = await parameterSweep(good,bad,"kde");
+  dotResults = await parameterSweep(good,bad,"dot");
+  histResults = await parameterSweep(good,bad,"histogram");
+  document.getElementById("simBtn").disabled = "disabled";
+  document.getElementById("simBtn").value = "Simulate";
+  mode = 1;
+  drawPair(good,bad,labels[mode]);
+  ranSimulation = true;
 }
 
 function mouseClicked(){
-  mode = (mode+1) % 3;
-  switch(mode){
-    case 1:
-    if(histResults)
-      drawClosest(good,bad);
-    break;
-
-    case 2:
-    if(histResults)
-      drawFurthest(good,bad);
-    break;
-
-    case 0:
-    default:
-      drawReasonable(good,bad);
-    break;
+  if(ranSimulation){
+    mode = (mode+1) % 3;
+    drawPair(good,bad,labels[mode]);
   }
 }
 
-function drawClosest(good,bad){
-  background(255);
-  noStroke();
-//Visible differences
-  wilkinsonDotPlot(good,0,0,350,175);
-  wilkinsonDotPlot(bad,400,0,350,175);
+function drawPair(good,bad){
+  var sigma,bins,markSize,markOpacity;
 
-//Least visible differences
-  histogram(good,0,200,350,175,histResults.worst.bin);
-  histogram(bad,400,200,350,175,histResults.worst.bin);
+  switch(mode){
 
-  dotplot(good,0,500,350,25,dotResults.worst.markSize,dotResults.worst.alpha,false);
-  dotplot(bad,400,500,350,25,dotResults.worst.markSize,dotResults.worst.alpha,false);
 
-  kdeplot(good,0,600,350,175,kdeResults.worst.bandwidth);
-  kdeplot(bad,400,600,350,175,kdeResults.worst.bandwidth);
+      case 1:
+        sigma = kdeResults.worst.bandwidth;
+        bins = histResults.worst.bin;
+        markSize = dotResults.worst.markSize;
+        markOpacity = dotResults.worst.alpha;
+      break;
 
-  text("Closest Visualizations (Pixels Change)", 400,850);
-  text("Distribution", 200, 800);
-  text("Distribution + Flaw(s)", 600, 800);
-}
+      case 2:
+        sigma = kdeResults.best.bandwidth;
+        bins = histResults.best.bin;
+        markSize = dotResults.best.markSize;
+        markOpacity = dotResults.best.alpha;
+      break;
 
-function drawFurthest(good,bad){
-  background(255);
-  noStroke();
-//Visible differences
-  wilkinsonDotPlot(good,0,0,350,175);
-  wilkinsonDotPlot(bad,400,0,350,175);
+      case 0:
+      default:
+        sigma = min(bandwidthEstimate(good), bandwidthEstimate(bad));
+        bins = max(binEstimate(good),binEstimate(bad));
+        markSize = 25;
+        markOpacity = 0.1;
+      break;
 
-//Most visible differences
-  histogram(good,0,200,350,175,histResults.best.bin);
-  histogram(bad,400,200,350,175,histResults.best.bin);
-
-  dotplot(good,0,500,350,25,dotResults.best.markSize,dotResults.best.alpha,false);
-  dotplot(bad,400,500,350,25,dotResults.best.markSize,dotResults.best.alpha,false);
-
-  kdeplot(good,0,600,350,175,kdeResults.best.bandwidth);
-  kdeplot(bad,400,600,350,175,kdeResults.best.bandwidth);
-
-  text("Furthest Visualizations (Pixel Change)", 400,850);
-  text("Distribution", 200, 800);
-  text("Distribution + Flaw(s)", 600, 800);
-}
-
-function drawReasonable(good,bad){
-  var sigma = min(bandwidthEstimate(good),bandwidthEstimate(bad));
-  var bins = max(binEstimate(good),binEstimate(bad));
-  var markSize = 25;
-  var markOpacity = 0.1;
+  }
 
   background(255);
   noStroke();
-//Visible differences
-  wilkinsonDotPlot(good,0,0,350,175);
-  wilkinsonDotPlot(bad,400,0,350,175);
 
-//Reasonable parameters
-  histogram(good,0,200,350,175,bins);
-  histogram(bad,400,200,350,175,bins);
+  text(labels[mode], 400,50);
+  text("Distribution", 200, 100);
+  text("Distribution + Flaw(s)", 600, 100);
+  //wilkinsonDotPlot(good,0,0,350,175);
+  //wilkinsonDotPlot(bad,400,0,350,175);
 
-  dotplot(good,0,500,350,25,markSize,markOpacity,false);
-  dotplot(bad,400,500,350,25,markSize,markOpacity,false);
+  histogram(good,0,150,350,175,bins);
+  histogram(bad,400,150,350,175,bins);
 
-  kdeplot(good,0,600,350,175,sigma);
-  kdeplot(bad,400,600,350,175,sigma);
+  dotplot(good,0,450,350,25,markSize,markOpacity,false);
+  dotplot(bad,400,450,350,25,markSize,markOpacity,false);
 
-  text("Vizzes with A Priori Parameters", 400,850);
-  text("Distribution", 200, 800);
-  text("Distribution + Flaw(s)", 600, 800);
+  kdeplot(good,0,550,350,175,sigma);
+  kdeplot(bad,400,550,350,175,sigma);
 }
 
 function draw(){
@@ -146,9 +165,6 @@ function parameterSweep(good,bad,visType){
       }
       results.push(obj);
     }
-    background(255);
-    kdeplot(good,0,0,300,50,best.bandwidth);
-    kdeplot(bad,0,55,300,50,best.bandwidth);
     break;
 
     case "histogram":
@@ -176,9 +192,6 @@ function parameterSweep(good,bad,visType){
       }
       results.push(obj);
     }
-    background(255);
-    histogram(good,0,0,300,50,best.bin);
-    histogram(bad,0,55,300,50,best.bin);
     break;
 
     case "dot":
@@ -190,8 +203,8 @@ function parameterSweep(good,bad,visType){
     for(var m of ms){
       for(var a of as){
         background(255);
-        dotplot(good,0,0,300,50,m,a,true);
-        dotplot(bad,0,50,300,50,m,a,true);
+        dotplot(good,0,0,300,50,m,a,false);
+        dotplot(bad,0,50,300,50,m,a,false);
         diff = imgDiff(0,0,0,50,300,50);
         var obj = {"alpha": a, "markSize": m, "diff": diff};
         if(first){
@@ -212,9 +225,6 @@ function parameterSweep(good,bad,visType){
         results.push(obj);
       }
     }
-    background(255);
-    dotplot(good,0,0,300,50,best.markSize,best.alpha,true);
-    dotplot(bad,0,55,300,50,best.markSize,best.alpha,true);
     break;
   }
 
@@ -445,9 +455,10 @@ function addOutlier(dist, numOutliers){
   var upperF = min(qs[2] + ( 1.5 * iqr),1);
   var lowerF = max(qs[0] - (1.5 * iqr),0);
 
+  var highOutlier = (1-upperF) > (lowerF-0);
   //outlier if more than 1.5iqr above q[2], or more than 1.5iqr below q[0]
   for(var i = 0;i<numOutliers;i++){
-    if(random()>0.5){
+    if(highOutlier){
       distribution.push(random(upperF, 1));
     }
     else{
@@ -457,11 +468,11 @@ function addOutlier(dist, numOutliers){
   return distribution;
 }
 
-function addMode(dist, modeSize){
+function addMode(dist, modeSize,modeVal){
   //add a random mode somewhere in the iqr.
   var distribution = dist.slice();
   var qs = dl.quartile(distribution);
-  var mode = random(qs[0], qs[2]);
+  var mode = modeVal ? modeVal : random(qs[0], qs[2]);
   for(var i = 0;i < modeSize;i++){
     distribution.push(mode);
   }
@@ -514,7 +525,7 @@ function stripplot(data,x,y,w,h,markSize,opacity){
   pop();
 }
 
-function dotplot(data,x,y,w,h,markSize,opacity, empty){
+function dotplot(data,x,y,w,h,markSize,opacity,empty){
   var posX;
   var dotC = color(red(tableauGray),green(tableauGray),blue(tableauGray),opacity*255);
   push();
