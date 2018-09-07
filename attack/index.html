@@ -11,7 +11,7 @@
 <p>
   Use this tool to create "Adversarial" Univariate Visualizations of a distribution.
   Create an initial "innocent" distribution of 100 samples from a Gaussian, and then introduce a set of data quality issues/flaws.
-  Then, use the "Run" button to find parameter settings to find sets of visualizations of the original and flawed datasets that are most similar (in terms of changed pixels). That is, visualizations that stand a good chance of hiding the data flaws that you've introduced.
+  Then, use the "Run" button to find parameter settings to find sets of visualizations of the original and flawed datasets that are most similar (in terms of changed pixels). Sometimes, these settings can almost entirely hide the flaws that you've introduced. However, some visualizations are more sensitive to data flaws than others.
 </p>
 <p>
   Once simulated, click the canvas to cycle through the parameter settings that would be the default in most software systems a priori, the paramemter settings that result in the closest visualizations (least pixels changed) and those that produce the furthest visualizations (most pixels changed).
@@ -30,7 +30,7 @@
   <input id="sampleBtn" type="submit" onclick="resample()" value="Re-Sample" />
 </div>
 <div>
-  <input id="simBtn" type="submit" onclick="simulate()" value="Simulate" />
+  <input id="simBtn" type="submit" onclick="simulate()" value="Run" />
 </div>
 </body>
 </html>
