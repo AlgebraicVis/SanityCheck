@@ -3,8 +3,8 @@ var tableauGray;
 var good,bad,kdeResults,dotResults,histResults;
 
 var labels = ["Visualizations with A Priori Parameters",
-"Closest Visualizations (Pixels Change)",
-"Furthest Visualizations (Pixel Change)"
+"Closest Visualizations (Pixel Color Change)",
+"Furthest Visualizations (Pixel Color Change)"
 ];
 
 var ranSimulation = false;
