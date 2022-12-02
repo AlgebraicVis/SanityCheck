@@ -11,7 +11,7 @@ The data are contained in the [Data](data/) folder.
 
 * `id`: The anonymized participant ID.
 * `index`: The order of the trial in the participant's study. There were 90 trials, with the first 9 being for training purposes only.
-* `distribution` : The null distribution. Our study supports multiple types of distributions, but we used only the `normal` (a Gaussian with mean of 0.5 and std. dev. of 0.15) for the study in the paer.
+* `distribution` : The null distribution. Our study supports multiple types of distributions, but we used only the `normal` (a Gaussian with mean of 0.5 and std. dev. of 0.15) for the study in the paper.
 * `flaw` : What type of data flaw the participant was meant to detect (one of `spike`, `gap`, or `outliers`).
 * `magnitude` : How many points, out of 50 total sample points, made up this flaw.
 * `vis` : What type of visualizations the participant saw (one of `density` for a density plot, `scatter` for a dot plot, or `histogram`).
